@@ -26,9 +26,9 @@ Simple Structure computes the static structure factor and outputs ratios with th
 
 To sample something like the carbon in CHOH groups of PVA, the necessary outputs would be
 
-CHOH groups
-type 1 is carbon in ch2, type 2 carbon in choh
-group backbone2 type 2
+% CHOH groups \n
+% type 1 is carbon in ch2, type 2 carbon in choh \n
+group backbone2 type 2 \n
 
 compute CCrdf all rdf 200 *3 *3 cutoff 20.0 # bin is 0.1 Angstrom
 fix	 1 all ave/time  10000 1 10000 c_CCrdf[*] file test-RDF.txt mode vector
