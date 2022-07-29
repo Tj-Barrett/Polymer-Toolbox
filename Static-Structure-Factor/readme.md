@@ -17,7 +17,7 @@ special_bonds lj 0.0 0.0 1.0
 Inter chain only (in the case of polymers)
 special_bonds lj 0.0 0.0 0.0
 
-![RDF Example](https://user-images.githubusercontent.com/71855260/181778781-ad9e8f0f-a447-416b-994a-a599ec51dc4e.png)
+![RDF Example](https://user-images.githubusercontent.com/71855260/181778781-ad9e8f0f-a447-416b-994a-a599ec51dc4e.png | width=50)
 
 
 # SimpleStructure.py
@@ -39,4 +39,4 @@ run 0
 [ 0.825  2.425  3.675  4.825  6.125  7.525  9.175 10.425 11.575 13.275
  15.125 16.975 18.675 20.325 21.825 22.925]
 
-![Structure Factor Example](https://user-images.githubusercontent.com/71855260/181775994-89e7004d-72c7-47dd-9720-9d7200d5f676.png)
+![Structure Factor Example](https://user-images.githubusercontent.com/71855260/181775994-89e7004d-72c7-47dd-9720-9d7200d5f676.png | width=50)
