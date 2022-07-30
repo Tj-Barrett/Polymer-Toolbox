@@ -36,7 +36,7 @@ XYZfile = []
 # converts from LJ units
 ratio = 8.646 # 2*np.pi/(0.89*np.sqrt(2/3))
 
-# max wave number
+# max wavevector
 qmax = 25
 
 for i in prefix:
