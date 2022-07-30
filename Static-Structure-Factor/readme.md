@@ -28,8 +28,8 @@ To sample something like the carbon in CHOH groups of PVA, the necessary outputs
 
 ```
 compute testrdf all rdf 200
-fix 3 all ave/time 10000 1 10000 c_testrdf[*] file test-lj-RDF.txt mode vector
-dump 3 all custom 1 test-lj-end_xyz.dump id type type x y z xu yu zu
+fix 3 all ave/time 10000 1 10000 c_testrdf[*] file test-RDF.txt mode vector
+dump 3 all custom 1 test-end_xyz.dump id mol type x y z xu yu zu
 run 0
 ```
 
