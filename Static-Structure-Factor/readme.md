@@ -26,12 +26,12 @@ Simple Structure computes the static structure factor and outputs ratios with th
 
 To sample something like the carbon in CHOH groups of PVA, the necessary outputs would be:  
 
-'''
+```
 compute testrdf all rdf 200
 fix 3 all ave/time 10000 1 10000 c_testrdf[*] file test-lj-RDF.txt mode vector
 dump 3 all custom 1 test-lj-end_xyz.dump id type type x y z xu yu zu
 run 0
-'''
+```
 
  Ratios  
 [ 0.825  2.425  3.675  4.825  6.125  7.525  9.175 10.425 11.575 13.275
