@@ -24,8 +24,6 @@ special_bonds lj 0.0 0.0 0.0
 
 Simple Structure computes the static structure factor and outputs ratios with the following plot. Takes the RDF and a dump file to get the volume of the system.  
 
-To sample something like the carbon in CHOH groups of PVA, the necessary outputs would be:  
-
 ```
 compute testrdf all rdf 200
 fix 3 all ave/time 10000 1 10000 c_testrdf[*] file test-RDF.txt mode vector
