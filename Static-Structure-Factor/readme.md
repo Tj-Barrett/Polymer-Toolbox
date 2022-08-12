@@ -5,6 +5,7 @@ Reads rdf from LAMMPS. RDFs will trend to 1 for LJ fluids and have pronounced pe
 
 If using RDFs for something like iterative boltzmann inversion, see Iterative Boltzmann folder.  
 
+```
 all neighbors  
 special_bonds lj 1.0 1.0 1.0  
 
@@ -15,7 +16,7 @@ special_bonds lj 0.0 1.0 1.0
 special_bonds lj 0.0 0.0 1.0  
 
 Inter chain only (in the case of polymers)  
-special_bonds lj 0.0 0.0 0.0  
+special_bonds lj 0.0 0.0 0.0  ```
 
 <img src="https://user-images.githubusercontent.com/71855260/181778781-ad9e8f0f-a447-416b-994a-a599ec51dc4e.png" width="50%">
 
