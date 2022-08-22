@@ -18,8 +18,8 @@ from scipy.signal import argrelextrema
 import matplotlib.pyplot as plt
 
 # fixes qt conflict with pyside 6, unnecessary in most cases
-import matplotlib
-matplotlib.use('Qt5Agg')
+# import matplotlib
+# matplotlib.use('Qt5Agg')
 
 # Inputs from lammps file
 # RDF
