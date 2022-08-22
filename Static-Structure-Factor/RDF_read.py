@@ -10,8 +10,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # fixes qt conflict with pyside 6, unnecessary in most cases
-import matplotlib
-matplotlib.use('Qt5Agg')
+# import matplotlib
+# matplotlib.use('Qt5Agg')
 
 prefix = ['test-']
 legend = ['Test']
