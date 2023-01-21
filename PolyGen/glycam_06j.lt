@@ -1,0 +1,1248 @@
+####################################################################
+# To use this, LAMMPS must be compiled with the EXTRA-MOLECULE package
+# (See here for details: https://docs.lammps.org/Build_package.html)
+#######################################################################
+#    This moltemplate (LT) file was generated automatically using
+#      amber2lt.py --in GLYCAM_06j_lt.dat --out glycam_06j.lt --name glycam06j
+#######################################################################
+#      USAGE SUGGESTIONS:
+# Suppose you named your force field "GAFF"  (using amber2lt.py's "--name"
+# argument) and saved it in a file named "gaff.lt".  Then, in order to create
+# molecules that use this force field, create a file for each type of molecule
+# (eg "benzene.lt") and use this format:
+# #---- "benzene.lt" file -----
+# import "gaff.lt"
+# Benzene inherits GAFF {
+#   write('Data Atoms') {
+#     $atom:c1  $mol  @atom:ca  -0.115   -0.739   1.189  -0.00733
+#     $atom:c2  $mol  @atom:ca  -0.115    0.614   1.208   0.35167
+#        :        :        :
+#   }
+#   write("Data Bond List") {
+#     $bond:b1 $atom:C1 $atom:C2
+#        :
+#   }
+# }
+#
+# ------- How to generate molecule files (such as "benzene.lt") -------
+#
+# You can try to generate these files manually, but you must be careful
+# to choose the correct @atom types for each atom (eg "@atom:ca"),
+# and you must obtain the atomic charge (column 4) by other means. (See below.)
+#
+# Recommended method:
+#
+# Use AmberTools to create a MOL2 file containing one of the molecules
+# you want to simulate.  Suppose you use AmberTools to prepare a MOL2 file
+# containing a single benzene molecule (named "benzene.mol2")
+# and a corresponding FRCMOD file (named "benzene.frcmod").  Use:
+#
+# mol22lt.py --in benzene.mol2 --out benzene.lt --name Benzene \
+#            --ff MyForceField --ff-file my_force_field.lt
+# amber2lt.py --in benzene.frcmod --name MyForceField >> my_force_field.lt
+#
+# ...The resulting "benzene.lt" file will have this format:
+# #---- "benzene.lt" file -----
+# import "my_force_field.lt"
+# Benzene inherits MyForceField {
+#   :
+# }
+# Repeat this for each different type of molecule you want in your simulation.
+# (If it is a molecule with multiple chains, do this for every chain.)
+# (If you want to start over, delete the "my_force_field.lt" file.)
+#######################################################################
+
+
+glycam06j {
+
+  #  @atom:Cg  sp3 C aliphatic
+  #  @atom:CT  C aliphatic
+  #  @atom:2C  aliphatic C with two (duo) heavy atoms copied from ff12SB
+  #  @atom:3C  aliphatic C with three (tres) heavy atoms copied from ff12SB
+  #  @atom:CX  C-alpha (new to ff10) copied from parm10
+  #  @atom:Cy  C aliphatic - for sialic acid only!
+  #  @atom:C  C carbonyl group
+  #  @atom:Cp  C aliphatic - carbon atom bonded to an oxygen atom bonded to a phosphorus atom
+  #  @atom:Ck  C alkenes
+  #  @atom:Cj  C alkenes for adjacent double bonds
+  #  @atom:H  Bonded to nitrogen atoms
+  #  @atom:H1  aliph. bond. to C with 1 electrwd. groups
+  #  @atom:H2  aliph. bond. to C with 2 electrwd. groups
+  #  @atom:Hc  aliph. bond. to C without electrwd. groups
+  #  @atom:Ha  aliph. bond. to C in alkenes eg Ck
+  #  @atom:Ho  hydroxyl group
+  #  @atom:HW  TIP3P water
+  #  @atom:Hp  bonded to C next to positively charged group
+  #  @atom:Ng  N amide group
+  #  @atom:NT  N amine group
+  #  @atom:N3  N for charged amino groups (Lys, phospholipids, etc)
+  #  @atom:O  carbonyl group
+  #  @atom:O2  carboxyl group
+  #  @atom:Oh  hydroxyl group
+  #  @atom:Os  ether
+  #  @atom:Oy  ether - for sialic acid only!
+  #  @atom:OW  TIP3P water
+  #  @atom:S  in sulphates
+  #  @atom:Sm  carbohydrate linkage (-CH2-S-CH2-)
+  #  @atom:P  in phosphates
+
+  write_once("Data Masses") {
+    @atom:Cg 12.01
+    @atom:CT 12.01
+    @atom:2C 12.01
+    @atom:3C 12.01
+    @atom:CX 12.01
+    @atom:Cy 12.01
+    @atom:C 12.01
+    @atom:Cp 12.01
+    @atom:Ck 12.01
+    @atom:Cj 12.01
+    @atom:H 1.008
+    @atom:H1 1.008
+    @atom:H2 1.008
+    @atom:Hc 1.008
+    @atom:Ha 1.008
+    @atom:Ho 1.008
+    @atom:HW 1.008
+    @atom:Hp 1.008
+    @atom:Ng 14.01
+    @atom:NT 14.01
+    @atom:N3 14.01
+    @atom:O 16.00
+    @atom:O2 16.00
+    @atom:Oh 16.00
+    @atom:Os 16.00
+    @atom:Oy 16.00
+    @atom:OW 16.00
+    @atom:S 32.06
+    @atom:Sm 32.06
+    @atom:P 30.97
+  } # (end of masses)
+
+  write_once("In Settings") {
+    pair_coeff @atom:H @atom:H lj/charmm/coul/long 0.0157 1.069078461768407   # !Ferguson base pair geom.
+    pair_coeff @atom:Ho @atom:Ho lj/charmm/coul/long 0.0300 0.35635948725613575   # M.B. Tessier 2011
+    pair_coeff @atom:Hc @atom:Hc lj/charmm/coul/long 0.0157 2.649532787749369   # OPLS
+    pair_coeff @atom:H1 @atom:H1 lj/charmm/coul/long 0.0157 2.471353044121301   # Veenstra et al JCC,8,(1992),963
+    pair_coeff @atom:H2 @atom:H2 lj/charmm/coul/long 0.0157 2.2931733004932333   # Veenstra et al JCC,8,(1992),963
+    pair_coeff @atom:HW @atom:HW lj/charmm/coul/long 0.0000 0.0   # TIP3P water model
+    pair_coeff @atom:Ha @atom:Ha lj/charmm/coul/long 0.0150 2.59964245953351   # Spellmeyer
+    pair_coeff @atom:Hp @atom:Hp lj/charmm/coul/long 0.0157 1.9599771799087466   # Veenstra et al JCC,8,(1992),963
+    pair_coeff @atom:O @atom:O lj/charmm/coul/long 0.2100 2.959921901149463   # OPLS
+    pair_coeff @atom:O2 @atom:O2 lj/charmm/coul/long 0.2100 2.959921901149463   # OPLS
+    pair_coeff @atom:OW @atom:OW lj/charmm/coul/long 0.1520 3.150752406575124   # TIP3P water model
+    pair_coeff @atom:Oh @atom:Oh lj/charmm/coul/long 0.2104 3.0664733878390478   # OPLS
+    pair_coeff @atom:Os @atom:Os lj/charmm/coul/long 0.1700 3.0000123434657784   # OPLS ether
+    pair_coeff @atom:Oy @atom:Oy lj/charmm/coul/long 0.1700 3.0000123434657784   # OPLS ether - sialic acid only
+    pair_coeff @atom:Cg @atom:Cg lj/charmm/coul/long 0.1094 3.3996695084235347   # Spellmeyer
+    pair_coeff @atom:Cy @atom:Cy lj/charmm/coul/long 0.1094 3.3996695084235347   # Spellmeyer - sialic acid only
+    pair_coeff @atom:C @atom:C lj/charmm/coul/long 0.0860 3.3996695084235347   # OPLS
+    pair_coeff @atom:Cp @atom:Cp lj/charmm/coul/long 0.1094 3.3996695084235347   # Spellmeyer
+    pair_coeff @atom:Ck @atom:Ck lj/charmm/coul/long 0.0860 3.3996695084235347   # Spellmeyer
+    pair_coeff @atom:Cj @atom:Cj lj/charmm/coul/long 0.0860 3.3996695084235347   # Spellmeyer
+    pair_coeff @atom:Ng @atom:Ng lj/charmm/coul/long 0.1700 3.249998523775958   # OPLS
+    pair_coeff @atom:NT @atom:NT lj/charmm/coul/long 0.1700 3.249998523775958   # OPLS
+    pair_coeff @atom:N3 @atom:N3 lj/charmm/coul/long 0.1700 3.249998523775958   # OPLS
+    pair_coeff @atom:S @atom:S lj/charmm/coul/long 0.2500 3.563594872561357   # W. Cornell CH3SH and CH3SCH3 FEP's 03/16/05 from parm10.dat
+    pair_coeff @atom:Sm @atom:Sm lj/charmm/coul/long 0.2104 3.0664733878390478   # OPLS
+    pair_coeff @atom:P @atom:P lj/charmm/coul/long 0.2000 3.741774616189425   # JCC,7,(1986),230; 04/24/05 from parm10.dat
+    pair_coeff @atom:CT @atom:CT lj/charmm/coul/long 0.0 1.0 # (default parameters)
+    pair_coeff @atom:2C @atom:2C lj/charmm/coul/long 0.0 1.0 # (default parameters)
+    pair_coeff @atom:3C @atom:3C lj/charmm/coul/long 0.0 1.0 # (default parameters)
+    pair_coeff @atom:CX @atom:CX lj/charmm/coul/long 0.0 1.0 # (default parameters)
+  } # (end of pair_coeffs)
+
+  write_once("In Settings") {
+    bond_coeff @bond:Cg-N harmonic 337.0 1.450   # Copy of Cg-Ng from GLYCAM06
+    bond_coeff @bond:CT-Os harmonic 320.0 1.410   # Copy of CT-OS from parm10.dat
+    bond_coeff @bond:2C-Os harmonic 320.0 1.410   # Copy of CT-OS from parm10.dat
+    bond_coeff @bond:3C-Os harmonic 320.0 1.410   # Copy of CT-OS from parm10.dat
+    bond_coeff @bond:S-Ng harmonic 238.0 1.675   # N-Sulfate - Using avg value from ZULPIF and ZULPIF01 (CSD 1.638 A)
+    bond_coeff @bond:Cg-Sm harmonic 237.0 1.810   # Changed from 222.0 based on methanethiol nmodes
+    bond_coeff @bond:N3-H harmonic 434.0 1.010   # Parm10
+    bond_coeff @bond:N3-Cg harmonic 355.0 1.490   # Methanaminium (eqm value from crystal avg)
+    bond_coeff @bond:Cj-Ck harmonic 350.9 1.467   # CRC manual for 1,3-butadiene
+    bond_coeff @bond:Os-Cj harmonic 454.5 1.359   # copy of Os-Ck
+    bond_coeff @bond:Os-Ck harmonic 454.5 1.359   # Methoxyethene (JACS 1993, 115, 11921)
+    bond_coeff @bond:Cj-Cj harmonic 629.0 1.337   # copy of Ck-Ck
+    bond_coeff @bond:Ck-Ck harmonic 629.0 1.337   # JCC 1996, 17 (5&6),669
+    bond_coeff @bond:Cg-Cj harmonic 324.0 1.514   # copy of Cg-Ck
+    bond_coeff @bond:Cg-Ck harmonic 324.0 1.514   # JCC 1996, 17 (5&6),669
+    bond_coeff @bond:Cj-Ha harmonic 360.0 1.095   # copy of Ck-Ha
+    bond_coeff @bond:Ck-Ha harmonic 360.0 1.095   # Ethane for alkenes
+    bond_coeff @bond:Cg-Hp harmonic 360.0 1.095   # Copy of Cg-Hc
+    bond_coeff @bond:NT-H harmonic 434.0 1.010   # Parm99
+    bond_coeff @bond:NT-Cg harmonic 352.0 1.470   # K calculated from methyl amine (eqm value from crystal average)
+    bond_coeff @bond:Cg-Cp harmonic 310.0 1.520   # Copy of Cg-Cg
+    bond_coeff @bond:Cp-H2 harmonic 340.0 1.090   # Copy of Cg-H1
+    bond_coeff @bond:Cp-H1 harmonic 340.0 1.090   # Copy of Cg-H1
+    bond_coeff @bond:Cp-Os harmonic 285.0 1.460   # Copy of Cg-Os
+    bond_coeff @bond:P-Os harmonic 230.0 1.610   # Parm94
+    bond_coeff @bond:P-O2 harmonic 525.0 1.480   # Parm10
+    bond_coeff @bond:S-Os harmonic 206.0 1.589   # K calculated from methyl sulphate (eqm value from THEOCHEM 395/396 (1997) 107-122)
+    bond_coeff @bond:S-O2 harmonic 620.0 1.440   # K calculated from methyl sulphate (eqm value from THEOCHEM 395/396 (1997) 107-122)
+    bond_coeff @bond:C-Os harmonic 450.0 1.323   # Parm99
+    bond_coeff @bond:OW-HW harmonic 553.0 0.9572   # TIP3P water
+    bond_coeff @bond:HW-HW harmonic 553.0 1.5136   # TIP3P water
+    bond_coeff @bond:Cg-Cg harmonic 310.0 1.520   # Butane (gauche, and trans)
+    bond_coeff @bond:Cg-Hc harmonic 340.0 1.090   # Parm94
+    bond_coeff @bond:Cg-H1 harmonic 340.0 1.090   # Parm94
+    bond_coeff @bond:Cg-H2 harmonic 340.0 1.090   # Parm94
+    bond_coeff @bond:Cg-Oh harmonic 320.0 1.430   # Methanol
+    bond_coeff @bond:Cg-C harmonic 220.0 1.530   # 2-Methylpropanoate
+    bond_coeff @bond:Cg-Ng harmonic 337.0 1.450   # N-Methylethanamide
+    bond_coeff @bond:C-O harmonic 570.0 1.229   # Parm10
+    bond_coeff @bond:C-Ng harmonic 490.0 1.335   # Parm94
+    bond_coeff @bond:C-O2 harmonic 656.0 1.250   # Parm10
+    bond_coeff @bond:C-Hc harmonic 331.0 1.090   # Parm91
+    bond_coeff @bond:C-H1 harmonic 410.0 1.092   # Methanol
+    bond_coeff @bond:Oh-Ho harmonic 553.0 0.960   # Methanol
+    bond_coeff @bond:Ng-H harmonic 434.0 1.010   # Parm94
+    bond_coeff @bond:Cy-Oh harmonic 320.0 1.410   # Parm94 - for sialic acid only!
+    bond_coeff @bond:Cg-Os harmonic 285.0 1.460   # Parm94 K calculated from methyl sulphate (eqm value from THEOCHEM 395/396 (1997) 107-122)
+    bond_coeff @bond:Cg-Oy harmonic 320.0 1.410   # Parm94 - for sialic acid only!
+    bond_coeff @bond:Cy-Cg harmonic 310.0 1.520   # Butane (gauche, and trans) - for sialic acid only!
+    bond_coeff @bond:Cy-Os harmonic 320.0 1.410   # Parm94 - for sialic acid only!
+    bond_coeff @bond:Cy-Oy harmonic 320.0 1.410   # Parm94 - for sialic acid only!
+    bond_coeff @bond:Cy-C harmonic 220.0 1.530   # 2-Methylpropanoate - for sialic acid only!
+  } # (end of bond_coeffs)
+
+  write_once("Data Bonds By Type") {
+    @bond:Cg-N @atom:Cg @atom:N
+    @bond:CT-Os @atom:CT @atom:Os
+    @bond:2C-Os @atom:2C @atom:Os
+    @bond:3C-Os @atom:3C @atom:Os
+    @bond:S-Ng @atom:S @atom:Ng
+    @bond:Cg-Sm @atom:Cg @atom:Sm
+    @bond:N3-H @atom:N3 @atom:H
+    @bond:N3-Cg @atom:N3 @atom:Cg
+    @bond:Cj-Ck @atom:Cj @atom:Ck
+    @bond:Os-Cj @atom:Os @atom:Cj
+    @bond:Os-Ck @atom:Os @atom:Ck
+    @bond:Cj-Cj @atom:Cj @atom:Cj
+    @bond:Ck-Ck @atom:Ck @atom:Ck
+    @bond:Cg-Cj @atom:Cg @atom:Cj
+    @bond:Cg-Ck @atom:Cg @atom:Ck
+    @bond:Cj-Ha @atom:Cj @atom:Ha
+    @bond:Ck-Ha @atom:Ck @atom:Ha
+    @bond:Cg-Hp @atom:Cg @atom:Hp
+    @bond:NT-H @atom:NT @atom:H
+    @bond:NT-Cg @atom:NT @atom:Cg
+    @bond:Cg-Cp @atom:Cg @atom:Cp
+    @bond:Cp-H2 @atom:Cp @atom:H2
+    @bond:Cp-H1 @atom:Cp @atom:H1
+    @bond:Cp-Os @atom:Cp @atom:Os
+    @bond:P-Os @atom:P @atom:Os
+    @bond:P-O2 @atom:P @atom:O2
+    @bond:S-Os @atom:S @atom:Os
+    @bond:S-O2 @atom:S @atom:O2
+    @bond:C-Os @atom:C @atom:Os
+    @bond:OW-HW @atom:OW @atom:HW
+    @bond:HW-HW @atom:HW @atom:HW
+    @bond:Cg-Cg @atom:Cg @atom:Cg
+    @bond:Cg-Hc @atom:Cg @atom:Hc
+    @bond:Cg-H1 @atom:Cg @atom:H1
+    @bond:Cg-H2 @atom:Cg @atom:H2
+    @bond:Cg-Oh @atom:Cg @atom:Oh
+    @bond:Cg-C @atom:Cg @atom:C
+    @bond:Cg-Ng @atom:Cg @atom:Ng
+    @bond:C-O @atom:C @atom:O
+    @bond:C-Ng @atom:C @atom:Ng
+    @bond:C-O2 @atom:C @atom:O2
+    @bond:C-Hc @atom:C @atom:Hc
+    @bond:C-H1 @atom:C @atom:H1
+    @bond:Oh-Ho @atom:Oh @atom:Ho
+    @bond:Ng-H @atom:Ng @atom:H
+    @bond:Cy-Oh @atom:Cy @atom:Oh
+    @bond:Cg-Os @atom:Cg @atom:Os
+    @bond:Cg-Oy @atom:Cg @atom:Oy
+    @bond:Cy-Cg @atom:Cy @atom:Cg
+    @bond:Cy-Os @atom:Cy @atom:Os
+    @bond:Cy-Oy @atom:Cy @atom:Oy
+    @bond:Cy-C @atom:Cy @atom:C
+  } # (end of Bonds By Type)
+
+  write_once("In Settings") {
+    angle_coeff @angle:H-N-Cg harmonic 30.00 118.00   # Copy of H -Ng-Cg from GLYCAM06
+    angle_coeff @angle:Os-Cg-N harmonic 106.90 107.90   # Copy of Os-Cg-Ng from GLYCAM06
+    angle_coeff @angle:Cg-Cg-N harmonic 80.00 109.70   # Copy of CT-CT-N from parm99.dat
+    angle_coeff @angle:H2-Cg-N harmonic 50.00 109.50   # Copy of H1-CT-N from parm99.dat
+    angle_coeff @angle:C-N-Cg harmonic 50.00 120.00   # Copy of C -Ng-Cg from GLYCAM06
+    angle_coeff @angle:CT-Os-Cy harmonic 50.00 111.60   # Copy of Cg-Os-Cy from GLYCAM06
+    angle_coeff @angle:H1-CT-Os harmonic 50.0 109.5   # Copy of H1-CT-OS from parm99.dat
+    angle_coeff @angle:H1-2C-Os harmonic 50.0 109.5   # Copy of H1-CT-OS from parm99.dat
+    angle_coeff @angle:H1-3C-Os harmonic 50.0 109.5   # Copy of H1-CT-OS from parm99.dat
+    angle_coeff @angle:CT-CT-Os harmonic 50.0 109.5   # Copy of CT-CT-OS from parm99.dat
+    angle_coeff @angle:CX-CT-Os harmonic 50.0 109.5   # Copy of CT-CT-OS from parm99.dat
+    angle_coeff @angle:CT-3C-Os harmonic 50.0 109.5   # Copy of CT-CT-OS from parm99.dat
+    angle_coeff @angle:CX-2C-Os harmonic 50.0 109.5   # Copy of CT-CT-OS from parm99.dat
+    angle_coeff @angle:CX-3C-Os harmonic 50.0 109.5   # Copy of CT-CT-OS from parm99.dat
+    angle_coeff @angle:S-Ng-Cg harmonic 31.0 110.0   # avg value from ZULPIF & ZULPIF01 118.4 deg
+    angle_coeff @angle:O2-S-Ng harmonic 84.0 108.0   # avg value from ZULPIF & ZULPIF01 106.4 deg
+    angle_coeff @angle:S-Ng-H harmonic 37.5 121.2   # avg value from QM 6-31++g** 114.0 deg (ethylsulfamate)
+    angle_coeff @angle:H2-Cg-Sm harmonic 41.5 109.6   # Avg value from set of CSD crystal structures 109.2 deg
+    angle_coeff @angle:Os-Cg-Sm harmonic 68.0 108.3   # Avg value from set of CSD crystal structures 108.3 deg
+    angle_coeff @angle:Cg-Cg-Sm harmonic 50.0 108.6   # AA cys
+    angle_coeff @angle:Cg-Sm-Cg harmonic 50.0 109.5   # AA cyx
+    angle_coeff @angle:H1-Cg-Sm harmonic 50.0 109.5   # AA cys changed based on NMA nmodes
+    angle_coeff @angle:Hc-Cg-Sm harmonic 50.0 109.5   # AA cys changed based on NMA nmodes
+    angle_coeff @angle:H-N3-Cg harmonic 45.5 109.2   # Methanaminium (eqm. value copied from H -NT-Cg)
+    angle_coeff @angle:H-N3-H harmonic 35.0 109.5   # Parm10
+    angle_coeff @angle:N3-Cg-Hp harmonic 57.0 109.6   # Methanaminium (eqm. value copied from NT-Cg-H1)
+    angle_coeff @angle:Cj-Cg-Ck harmonic 46.7 111.5   # Copy of Ck-Cg-Ck from GLYCAM06
+    angle_coeff @angle:Ck-Cg-Ck harmonic 46.7 111.5   # K calculated from 1,4-pentadiene (value from ED of C2 and CS conformers JACS 1987,109,24,7304-7309 108.9 deg)
+    angle_coeff @angle:Cj-Cg-Cj harmonic 46.7 111.5   # Copy of Ck-Cg-Ck from GLYCAM06
+    angle_coeff @angle:Os-Cj-Ha harmonic 65.1 107.5   # Copy of Os-Ck-Ha from GLYCAM06
+    angle_coeff @angle:Os-Ck-Ha harmonic 65.1 107.5   # K calculated from methoxyethene (value from J Mol Struct 102 (1983) pg 333-345 methoxyethene 108.3 deg)
+    angle_coeff @angle:Cg-Os-Cj harmonic 38.0 107.0   # Copy of Cg-Os-Ck from GLYCAM06
+    angle_coeff @angle:Cg-Os-Ck harmonic 38.0 107.0   # K calculated from methoxyethene (value from J Mol Struct 28 (1975) pg 193-203 methoxyethene 118.3 deg)
+    angle_coeff @angle:Os-Cj-Cj harmonic 59.5 119.0   # Copy of Os-Ck-Ck from GLYCAM06
+    angle_coeff @angle:Os-Ck-Ck harmonic 59.5 119.0   # K calculated from methoxyethene (value from J Mol Struct 28 (1975) pg 193-203 methoxyethene 127.7 deg)
+    angle_coeff @angle:Cg-Cj-Cg harmonic 46.1 115.6   # Copy of Cg-Ck-Cg from GLYCAM06
+    angle_coeff @angle:Cg-Ck-Cg harmonic 46.1 115.6   # K calculated from 2-methylpropene (eqm value from ED,MW average 115.6 deg)
+    angle_coeff @angle:Ck-Cj-Ha harmonic 32.7 126.4   # Copy of Cj-Ck-Ha from GLYCAM06
+    angle_coeff @angle:Cj-Ck-Ha harmonic 32.7 126.4   # K calculated from 1,3-butadiene (value form ED of 1,3-butadiene 120.9 deg)
+    angle_coeff @angle:Ck-Cj-Cj harmonic 49.4 127.7   # Copy of Ck-Ck-Cj from GLYCAM06
+    angle_coeff @angle:Ck-Ck-Cj harmonic 49.4 127.7   # K calculated from 1,3-butadiene (eqm value from ED 124.4 deg)
+    angle_coeff @angle:Ha-Cj-Ha harmonic 31.3 117.4   # Copy of Ha-Ck-Ha from GLYCAM06
+    angle_coeff @angle:Ha-Ck-Ha harmonic 31.3 117.4   # K calculated from ethylene (eqm value from ED,MW average)
+    angle_coeff @angle:Ha-Cj-Cj harmonic 38.2 121.3   # Copy of Ha-Ck-Ck from GLYCAM06
+    angle_coeff @angle:Ha-Ck-Ck harmonic 38.2 121.3   # K calculated from ethylene (eqm value from ED,MW average)
+    angle_coeff @angle:H1-Cg-Cj harmonic 56.0 111.5   # Copy of H1-Cg-Ck from GLYCAM06
+    angle_coeff @angle:H1-Cg-Ck harmonic 56.0 111.5   # Copy of Hc-Cg-Ck from GLYCAM06
+    angle_coeff @angle:Hc-Cg-Cj harmonic 41.4 114.0   # Copy of Hc-Cg-Ck from GLYCAM06
+    angle_coeff @angle:Hc-Cg-Ck harmonic 41.4 114.0   # K calculated from propene (eqm value from JMS 1973,17,207-223,ED 111.7 deg)
+    angle_coeff @angle:Ha-Cj-Cg harmonic 50.0 114.0   # Copy of Ha-Ck-Cg from GLYCAM06
+    angle_coeff @angle:Ha-Ck-Cg harmonic 50.0 114.0   # K calculated from propene (eqm value from ED,MW average)
+    angle_coeff @angle:Cg-Cj-Cj harmonic 47.9 122.5   # Copy of Cg-Ck-Ck from GLYCAM06
+    angle_coeff @angle:Cg-Ck-Ck harmonic 47.9 122.5   # K calculated from propene (eqm value from JMS 1973,17,207-223,ED 124.3 deg)
+    angle_coeff @angle:Cg-Cg-Cj harmonic 43.0 112.0   # Copy of Cg-Cg-Ck from GLYCAM06
+    angle_coeff @angle:Cg-Cg-Ck harmonic 43.0 112.0   # K calculated from but-1-ene (eqm value from JACS 1980,102(7),471)
+    angle_coeff @angle:Oh-Cg-Cj harmonic 70.0 107.5   # Copy of Oh-Cg-Ck from GLYCAM06
+    angle_coeff @angle:Oh-Cg-Ck harmonic 70.0 107.5   # Copy of Oh-Cg-Cg from GLYCAM06
+    angle_coeff @angle:Hp-Cg-Hp harmonic 40.0 109.5   # Copy of Hc-Cg-Hc from GLYCAM06
+    angle_coeff @angle:Hp-Cg-Cp harmonic 45.0 112.6   # Copy of Cg-Cg-Hc from GLYCAM06
+    angle_coeff @angle:Hp-Cg-Cg harmonic 45.0 112.6   # Copy of Cg-Cg-Hc from GLYCAM06
+    angle_coeff @angle:Cp-Os-Cg harmonic 50.00 111.60   # Copy of Cg-Os-Cg from GLYCAM06
+    angle_coeff @angle:Cp-Cg-Ng harmonic 80.00 109.70   # Copy of Cg-Cg-N from GLYCAM06
+    angle_coeff @angle:Cg-N3-Cg harmonic 54.0 111.1
+    angle_coeff @angle:N3-Cg-Cp harmonic 67.0 111.6   # Copy of NT-Cg-Cg from GLYCAM06
+    angle_coeff @angle:N3-Cg-Cg harmonic 67.0 111.6   # Copy of NT-Cg-Cg from GLYCAM06
+    angle_coeff @angle:H-NT-H harmonic 35.0 109.5   # Copy of H-N3-H (Parm10) from GLYCAM06
+    angle_coeff @angle:H-NT-Cg harmonic 49.0 109.2   # K calculated from methyl amine (eqm value from crystal average)
+    angle_coeff @angle:NT-Cg-H1 harmonic 64.0 109.6   # K calculated from methyl amine (eqm value from crystal average)
+    angle_coeff @angle:NT-Cg-Cg harmonic 67.0 111.6   # K calculated from ethyl amine (eqm value from crystal average)
+    angle_coeff @angle:Cg-NT-Cg harmonic 54.0 108.1   # K calculated from dimethyl amine (eqm value from crystal average)
+    angle_coeff @angle:H1-Cp-H1 harmonic 45.00 109.50   # Copy of H1-Cg-H1 from GLYCAM06
+    angle_coeff @angle:Cp-Cg-H1 harmonic 45.00 111.00   # Copy of Cg-Cg-H1 from GLYCAM06
+    angle_coeff @angle:Cg-Cp-H1 harmonic 45.00 111.00   # Copy of Cg-Cg-H1 from GLYCAM06
+    angle_coeff @angle:Cg-Cp-Cg harmonic 45.00 113.50   # Copy of Cg-Cg-Cg from GLYCAM06
+    angle_coeff @angle:Cp-Cg-Cg harmonic 45.00 113.50   # Copy of Cg-Cg-Cg from GLYCAM06
+    angle_coeff @angle:Os-Cp-Cg harmonic 70.00 108.50   # Copy of Os-Cg-Cg from GLYCAM06
+    angle_coeff @angle:Os-Cg-Cp harmonic 70.00 108.50   # Copy of Os-Cg-Cg from GLYCAM06
+    angle_coeff @angle:H2-Cp-Os harmonic 60.00 110.00   # Copy of H1-Cg-Os from GLYCAM06
+    angle_coeff @angle:H1-Cp-Os harmonic 60.00 110.00   # Copy of H1-Cg-Os from GLYCAM06
+    angle_coeff @angle:Os-P-Os harmonic 45.0 109.6   # Parm94 and changed eqm value for better reproduction of average of crystal structures
+    angle_coeff @angle:P-Os-Cp harmonic 50.0 119.0   # K calculated from dimethyl phosphate (eqm value from crystal average)
+    angle_coeff @angle:O2-P-Os harmonic 100.0 108.23   # Parm99
+    angle_coeff @angle:O2-P-O2 harmonic 140.0 119.9   # Parm10
+    angle_coeff @angle:O2-S-O2 harmonic 123.0 113.91   # K calculated from methyl sulphate (eqm value from THEOCHEM 395/396 (1997) 107-122)
+    angle_coeff @angle:S-Os-Cg harmonic 50.0 118.88   # K calculated from methyl sulphate (eqm value from THEOCHEM 395/396 (1997) 107-122)
+    angle_coeff @angle:O2-S-Os harmonic 104.0 106.87   # K calculated from methyl sulphate (eqm value from THEOCHEM 395/396 (1997) 107-122)
+    angle_coeff @angle:Oh-Cg-C harmonic 63.00 112.36   # Glycam_93 (taken from Os-Cg-C) - for N-glycolyl
+    angle_coeff @angle:Cg-Os-C harmonic 60.0 117.00   # K calculated from methyl acetate (eqm value from crystal average)
+    angle_coeff @angle:Os-C-O harmonic 80.0 125.00   # Parm99
+    angle_coeff @angle:Os-C-Cg harmonic 95.0 110.80   # K calculated from methyl acetate (eqm value from crystal average)
+    angle_coeff @angle:HW-OW-HW harmonic 100. 104.52   # TIP3P water
+    angle_coeff @angle:HW-HW-OW harmonic 0. 127.74   # (found in crystallographic water with 3 bonds)
+    angle_coeff @angle:Hc-Cg-Hc harmonic 40.00 109.50   # Methane, Ethane
+    angle_coeff @angle:H1-Cg-H1 harmonic 45.00 109.50   # Methanol, Propanol
+    angle_coeff @angle:H2-Cg-H2 harmonic 45.00 109.50   # Methanol, Propanol
+    angle_coeff @angle:Cg-Cg-Hc harmonic 45.00 112.60   # Ethane
+    angle_coeff @angle:Cg-Cg-H1 harmonic 45.00 111.00   # Propanol
+    angle_coeff @angle:Cg-Cp-H2 harmonic 45.00 111.00   # Propanol
+    angle_coeff @angle:Cg-Cg-H2 harmonic 45.00 111.00   # Propanol
+    angle_coeff @angle:Cg-Cg-Cg harmonic 45.00 113.50   # Propane
+    angle_coeff @angle:Oh-Cg-Cg harmonic 70.00 107.50   # Ethanol
+    angle_coeff @angle:H1-Cg-Oh harmonic 60.00 110.00   # Methanol (best fit for trans and gauche hyrdogens)
+    angle_coeff @angle:H2-Cg-Oh harmonic 60.00 110.00   # Methanol (best fit for trans and gauche hyrdogens)
+    angle_coeff @angle:Cg-Oh-Ho harmonic 55.00 109.50   # Methanol
+    angle_coeff @angle:Cy-Oh-Ho harmonic 55.00 109.50   # - Sialic Acid Only
+    angle_coeff @angle:Cg-Os-Cg harmonic 50.00 111.60   # Methoxymethane (Dimethyl ether)
+    angle_coeff @angle:CT-Os-Cg harmonic 50.00 111.60   # Methoxymethane (Dimethylether) for OLS, OLT
+    angle_coeff @angle:2C-Os-Cg harmonic 50.00 111.60   # Methoxymethane (Dimethylether) for OLS, OLT
+    angle_coeff @angle:3C-Os-Cg harmonic 50.00 111.60   # Methoxymethane (Dimethylether) for OLS, OLT
+    angle_coeff @angle:Os-Cg-Cg harmonic 70.00 108.50   # Methoxyethane (Ethylmethyl ether)
+    angle_coeff @angle:Oy-Cg-Cg harmonic 70.00 108.50   # Methoxyethane (Ethylmethyl ether) - for sialic acid only
+    angle_coeff @angle:H1-Cg-Os harmonic 60.00 110.00   # Methoxymethane (Dimethyl ether) - best fit for trans and gauche hyrdogens
+    angle_coeff @angle:H1-Cg-Oy harmonic 60.00 110.00   # Methoxymethane - for sialic acid only!
+    angle_coeff @angle:H2-Cg-Os harmonic 60.00 110.00   # Methoxymethane - best fit for trans and gauche hyrdogens
+    angle_coeff @angle:H1-C-O harmonic 60.00 110.00   # Methoxymethane - best fit for trans and gauche hyrdogens
+    angle_coeff @angle:H1-C-Ng harmonic 55.00 112.40   # AVG K C-C=O, H-C-N FOR N-FORMYL - Approximate
+    angle_coeff @angle:Os-Cp-Os harmonic 100.00 112.00   # Copy of Os-Cg-Os from GLYCAM06
+    angle_coeff @angle:Os-Cg-Os harmonic 100.00 112.00   # Dimethoxymethane, 1,1 Dimethoxyethane
+    angle_coeff @angle:Oh-Cg-Os harmonic 100.00 112.00   # Copy of Os-Cg-Os (not derived)
+    angle_coeff @angle:O2-C-O2 harmonic 80.00 126.00   # Parm10
+    angle_coeff @angle:O2-C-Cg harmonic 70.00 115.00   # Aprroximate based from 2-Dimethylpropanoate and Oh-Cg-Cg
+    angle_coeff @angle:Cg-C-Ng harmonic 70.00 115.60   # Force constant taken from Parm94, Angle set to HF/6-31G(d) value N-Methylethanamide
+    angle_coeff @angle:Cg-C-O harmonic 80.00 121.70   # Force constant taken from Parm94, Angle set to HF/6-31G(d) value N-Methylethanamide
+    angle_coeff @angle:Ng-C-O harmonic 80.00 122.90   # Parm94
+    angle_coeff @angle:Ng-Cg-Hc harmonic 50.00 110.10   # Force constant taken from Hc-Cg-C Parm94, Angle set to average HF/6-31G(d) value N-Methylethanamide
+    angle_coeff @angle:Os-Cg-Ng harmonic 106.90 107.90   # AVE X'TAL ASN-GLCNAC, K FROM FAMM (GLYCAM_93)
+    angle_coeff @angle:Cg-Cg-Ng harmonic 80.00 109.70   # Parm91
+    angle_coeff @angle:H1-Cg-Ng harmonic 50.00 109.50   # Parm94 H-Cg-N
+    angle_coeff @angle:H2-Cg-Ng harmonic 50.00 109.50   # Parm94 H-Cg-N
+    angle_coeff @angle:C-Cg-Cg harmonic 63.00 111.10   # Parm94
+    angle_coeff @angle:C-Cg-Hc harmonic 50.00 109.50   # Parm94
+    angle_coeff @angle:C-Cg-H1 harmonic 50.00 109.50   # Parm94
+    angle_coeff @angle:C-Cg-H2 harmonic 50.00 109.50   # Parm94
+    angle_coeff @angle:C-Ng-Cg harmonic 50.00 120.00   # Force constant taken from Parm94 - modified the angle by 2.9 degrees
+    angle_coeff @angle:Cg-Ng-Cg harmonic 50.00 118.00   # Parm94
+    angle_coeff @angle:H-Ng-Cg harmonic 30.00 118.00   # N-Methylethanamide
+    angle_coeff @angle:C-Ng-H harmonic 50.00 120.00   # Parm99
+    angle_coeff @angle:H-Ng-H harmonic 35.00 120.00   # Parm94
+    angle_coeff @angle:H2-C-Ng harmonic 55.00 112.40   # AVG K C-C=O, H-C-N FOR N-FORMYL
+    angle_coeff @angle:H2-C-O harmonic 55.00 122.20   # AVG K C-C=O, H-C-N FOR FORMYL
+    angle_coeff @angle:Os-Cg-C harmonic 63.00 112.36   # Glycam_93
+    angle_coeff @angle:O2-C-Oh harmonic 80.0 126.00   # Parm96
+    angle_coeff @angle:Os-Cy-Cg harmonic 70.00 108.50   # Methoxyethane (Ethylmethyl ether) - for sialic acid only!
+    angle_coeff @angle:Oh-Cy-Cg harmonic 70.00 108.50   # - for sialic acid only!
+    angle_coeff @angle:Oy-Cy-Cg harmonic 70.00 108.50   # Methoxyethane - for sialic acid only!
+    angle_coeff @angle:Oh-Cy-C harmonic 63.00 112.36   # - for sialic acid only!
+    angle_coeff @angle:Os-Cy-C harmonic 63.00 112.36   # Glycam_93 - for sialic acid only!
+    angle_coeff @angle:Oy-Cy-C harmonic 63.00 112.36   # Glycam_93 - for sialic acid only!
+    angle_coeff @angle:Oy-Cy-Oh harmonic 100.00 112.00   # - for sialic acid only!
+    angle_coeff @angle:Oy-Cy-Os harmonic 100.00 112.00   # Dimethoxymethane, 1,1 Dimethoxyethane - for sialic acid only!
+    angle_coeff @angle:Cg-Cy-C harmonic 63.00 111.10   # Parm94 - for sialic acid only!
+    angle_coeff @angle:Cg-Os-Cy harmonic 50.00 111.60   # Methoxymethane - for sialic acid only!
+    angle_coeff @angle:Cg-Oy-Cy harmonic 50.00 111.60   # Methoxymethane - for sialic acid only!
+    angle_coeff @angle:O2-C-Cy harmonic 70.00 115.00   # Aprroximate based from 2,2-Dimethylpropanoate and Oh-Cg-Cg - for sialic acid only!
+    angle_coeff @angle:Hc-Cg-Cy harmonic 45.00 112.60   # Ethane - for sialic acid only!
+    angle_coeff @angle:Cg-Cg-Cy harmonic 45.00 113.50   # Propane - for sialic acid only!
+  } # (end of angle_coeffs)
+
+  write_once("Data Angles By Type") {
+    @angle:H-N-Cg @atom:H @atom:N @atom:Cg
+    @angle:Os-Cg-N @atom:Os @atom:Cg @atom:N
+    @angle:Cg-Cg-N @atom:Cg @atom:Cg @atom:N
+    @angle:H2-Cg-N @atom:H2 @atom:Cg @atom:N
+    @angle:C-N-Cg @atom:C @atom:N @atom:Cg
+    @angle:CT-Os-Cy @atom:CT @atom:Os @atom:Cy
+    @angle:H1-CT-Os @atom:H1 @atom:CT @atom:Os
+    @angle:H1-2C-Os @atom:H1 @atom:2C @atom:Os
+    @angle:H1-3C-Os @atom:H1 @atom:3C @atom:Os
+    @angle:CT-CT-Os @atom:CT @atom:CT @atom:Os
+    @angle:CX-CT-Os @atom:CX @atom:CT @atom:Os
+    @angle:CT-3C-Os @atom:CT @atom:3C @atom:Os
+    @angle:CX-2C-Os @atom:CX @atom:2C @atom:Os
+    @angle:CX-3C-Os @atom:CX @atom:3C @atom:Os
+    @angle:S-Ng-Cg @atom:S @atom:Ng @atom:Cg
+    @angle:O2-S-Ng @atom:O2 @atom:S @atom:Ng
+    @angle:S-Ng-H @atom:S @atom:Ng @atom:H
+    @angle:H2-Cg-Sm @atom:H2 @atom:Cg @atom:Sm
+    @angle:Os-Cg-Sm @atom:Os @atom:Cg @atom:Sm
+    @angle:Cg-Cg-Sm @atom:Cg @atom:Cg @atom:Sm
+    @angle:Cg-Sm-Cg @atom:Cg @atom:Sm @atom:Cg
+    @angle:H1-Cg-Sm @atom:H1 @atom:Cg @atom:Sm
+    @angle:Hc-Cg-Sm @atom:Hc @atom:Cg @atom:Sm
+    @angle:H-N3-Cg @atom:H @atom:N3 @atom:Cg
+    @angle:H-N3-H @atom:H @atom:N3 @atom:H
+    @angle:N3-Cg-Hp @atom:N3 @atom:Cg @atom:Hp
+    @angle:Cj-Cg-Ck @atom:Cj @atom:Cg @atom:Ck
+    @angle:Ck-Cg-Ck @atom:Ck @atom:Cg @atom:Ck
+    @angle:Cj-Cg-Cj @atom:Cj @atom:Cg @atom:Cj
+    @angle:Os-Cj-Ha @atom:Os @atom:Cj @atom:Ha
+    @angle:Os-Ck-Ha @atom:Os @atom:Ck @atom:Ha
+    @angle:Cg-Os-Cj @atom:Cg @atom:Os @atom:Cj
+    @angle:Cg-Os-Ck @atom:Cg @atom:Os @atom:Ck
+    @angle:Os-Cj-Cj @atom:Os @atom:Cj @atom:Cj
+    @angle:Os-Ck-Ck @atom:Os @atom:Ck @atom:Ck
+    @angle:Cg-Cj-Cg @atom:Cg @atom:Cj @atom:Cg
+    @angle:Cg-Ck-Cg @atom:Cg @atom:Ck @atom:Cg
+    @angle:Ck-Cj-Ha @atom:Ck @atom:Cj @atom:Ha
+    @angle:Cj-Ck-Ha @atom:Cj @atom:Ck @atom:Ha
+    @angle:Ck-Cj-Cj @atom:Ck @atom:Cj @atom:Cj
+    @angle:Ck-Ck-Cj @atom:Ck @atom:Ck @atom:Cj
+    @angle:Ha-Cj-Ha @atom:Ha @atom:Cj @atom:Ha
+    @angle:Ha-Ck-Ha @atom:Ha @atom:Ck @atom:Ha
+    @angle:Ha-Cj-Cj @atom:Ha @atom:Cj @atom:Cj
+    @angle:Ha-Ck-Ck @atom:Ha @atom:Ck @atom:Ck
+    @angle:H1-Cg-Cj @atom:H1 @atom:Cg @atom:Cj
+    @angle:H1-Cg-Ck @atom:H1 @atom:Cg @atom:Ck
+    @angle:Hc-Cg-Cj @atom:Hc @atom:Cg @atom:Cj
+    @angle:Hc-Cg-Ck @atom:Hc @atom:Cg @atom:Ck
+    @angle:Ha-Cj-Cg @atom:Ha @atom:Cj @atom:Cg
+    @angle:Ha-Ck-Cg @atom:Ha @atom:Ck @atom:Cg
+    @angle:Cg-Cj-Cj @atom:Cg @atom:Cj @atom:Cj
+    @angle:Cg-Ck-Ck @atom:Cg @atom:Ck @atom:Ck
+    @angle:Cg-Cg-Cj @atom:Cg @atom:Cg @atom:Cj
+    @angle:Cg-Cg-Ck @atom:Cg @atom:Cg @atom:Ck
+    @angle:Oh-Cg-Cj @atom:Oh @atom:Cg @atom:Cj
+    @angle:Oh-Cg-Ck @atom:Oh @atom:Cg @atom:Ck
+    @angle:Hp-Cg-Hp @atom:Hp @atom:Cg @atom:Hp
+    @angle:Hp-Cg-Cp @atom:Hp @atom:Cg @atom:Cp
+    @angle:Hp-Cg-Cg @atom:Hp @atom:Cg @atom:Cg
+    @angle:Cp-Os-Cg @atom:Cp @atom:Os @atom:Cg
+    @angle:Cp-Cg-Ng @atom:Cp @atom:Cg @atom:Ng
+    @angle:Cg-N3-Cg @atom:Cg @atom:N3 @atom:Cg
+    @angle:N3-Cg-Cp @atom:N3 @atom:Cg @atom:Cp
+    @angle:N3-Cg-Cg @atom:N3 @atom:Cg @atom:Cg
+    @angle:H-NT-H @atom:H @atom:NT @atom:H
+    @angle:H-NT-Cg @atom:H @atom:NT @atom:Cg
+    @angle:NT-Cg-H1 @atom:NT @atom:Cg @atom:H1
+    @angle:NT-Cg-Cg @atom:NT @atom:Cg @atom:Cg
+    @angle:Cg-NT-Cg @atom:Cg @atom:NT @atom:Cg
+    @angle:H1-Cp-H1 @atom:H1 @atom:Cp @atom:H1
+    @angle:Cp-Cg-H1 @atom:Cp @atom:Cg @atom:H1
+    @angle:Cg-Cp-H1 @atom:Cg @atom:Cp @atom:H1
+    @angle:Cg-Cp-Cg @atom:Cg @atom:Cp @atom:Cg
+    @angle:Cp-Cg-Cg @atom:Cp @atom:Cg @atom:Cg
+    @angle:Os-Cp-Cg @atom:Os @atom:Cp @atom:Cg
+    @angle:Os-Cg-Cp @atom:Os @atom:Cg @atom:Cp
+    @angle:H2-Cp-Os @atom:H2 @atom:Cp @atom:Os
+    @angle:H1-Cp-Os @atom:H1 @atom:Cp @atom:Os
+    @angle:Os-P-Os @atom:Os @atom:P @atom:Os
+    @angle:P-Os-Cp @atom:P @atom:Os @atom:Cp
+    @angle:O2-P-Os @atom:O2 @atom:P @atom:Os
+    @angle:O2-P-O2 @atom:O2 @atom:P @atom:O2
+    @angle:O2-S-O2 @atom:O2 @atom:S @atom:O2
+    @angle:S-Os-Cg @atom:S @atom:Os @atom:Cg
+    @angle:O2-S-Os @atom:O2 @atom:S @atom:Os
+    @angle:Oh-Cg-C @atom:Oh @atom:Cg @atom:C
+    @angle:Cg-Os-C @atom:Cg @atom:Os @atom:C
+    @angle:Os-C-O @atom:Os @atom:C @atom:O
+    @angle:Os-C-Cg @atom:Os @atom:C @atom:Cg
+    @angle:HW-OW-HW @atom:HW @atom:OW @atom:HW
+    @angle:HW-HW-OW @atom:HW @atom:HW @atom:OW
+    @angle:Hc-Cg-Hc @atom:Hc @atom:Cg @atom:Hc
+    @angle:H1-Cg-H1 @atom:H1 @atom:Cg @atom:H1
+    @angle:H2-Cg-H2 @atom:H2 @atom:Cg @atom:H2
+    @angle:Cg-Cg-Hc @atom:Cg @atom:Cg @atom:Hc
+    @angle:Cg-Cg-H1 @atom:Cg @atom:Cg @atom:H1
+    @angle:Cg-Cp-H2 @atom:Cg @atom:Cp @atom:H2
+    @angle:Cg-Cg-H2 @atom:Cg @atom:Cg @atom:H2
+    @angle:Cg-Cg-Cg @atom:Cg @atom:Cg @atom:Cg
+    @angle:Oh-Cg-Cg @atom:Oh @atom:Cg @atom:Cg
+    @angle:H1-Cg-Oh @atom:H1 @atom:Cg @atom:Oh
+    @angle:H2-Cg-Oh @atom:H2 @atom:Cg @atom:Oh
+    @angle:Cg-Oh-Ho @atom:Cg @atom:Oh @atom:Ho
+    @angle:Cy-Oh-Ho @atom:Cy @atom:Oh @atom:Ho
+    @angle:Cg-Os-Cg @atom:Cg @atom:Os @atom:Cg
+    @angle:CT-Os-Cg @atom:CT @atom:Os @atom:Cg
+    @angle:2C-Os-Cg @atom:2C @atom:Os @atom:Cg
+    @angle:3C-Os-Cg @atom:3C @atom:Os @atom:Cg
+    @angle:Os-Cg-Cg @atom:Os @atom:Cg @atom:Cg
+    @angle:Oy-Cg-Cg @atom:Oy @atom:Cg @atom:Cg
+    @angle:H1-Cg-Os @atom:H1 @atom:Cg @atom:Os
+    @angle:H1-Cg-Oy @atom:H1 @atom:Cg @atom:Oy
+    @angle:H2-Cg-Os @atom:H2 @atom:Cg @atom:Os
+    @angle:H1-C-O @atom:H1 @atom:C @atom:O
+    @angle:H1-C-Ng @atom:H1 @atom:C @atom:Ng
+    @angle:Os-Cp-Os @atom:Os @atom:Cp @atom:Os
+    @angle:Os-Cg-Os @atom:Os @atom:Cg @atom:Os
+    @angle:Oh-Cg-Os @atom:Oh @atom:Cg @atom:Os
+    @angle:O2-C-O2 @atom:O2 @atom:C @atom:O2
+    @angle:O2-C-Cg @atom:O2 @atom:C @atom:Cg
+    @angle:Cg-C-Ng @atom:Cg @atom:C @atom:Ng
+    @angle:Cg-C-O @atom:Cg @atom:C @atom:O
+    @angle:Ng-C-O @atom:Ng @atom:C @atom:O
+    @angle:Ng-Cg-Hc @atom:Ng @atom:Cg @atom:Hc
+    @angle:Os-Cg-Ng @atom:Os @atom:Cg @atom:Ng
+    @angle:Cg-Cg-Ng @atom:Cg @atom:Cg @atom:Ng
+    @angle:H1-Cg-Ng @atom:H1 @atom:Cg @atom:Ng
+    @angle:H2-Cg-Ng @atom:H2 @atom:Cg @atom:Ng
+    @angle:C-Cg-Cg @atom:C @atom:Cg @atom:Cg
+    @angle:C-Cg-Hc @atom:C @atom:Cg @atom:Hc
+    @angle:C-Cg-H1 @atom:C @atom:Cg @atom:H1
+    @angle:C-Cg-H2 @atom:C @atom:Cg @atom:H2
+    @angle:C-Ng-Cg @atom:C @atom:Ng @atom:Cg
+    @angle:Cg-Ng-Cg @atom:Cg @atom:Ng @atom:Cg
+    @angle:H-Ng-Cg @atom:H @atom:Ng @atom:Cg
+    @angle:C-Ng-H @atom:C @atom:Ng @atom:H
+    @angle:H-Ng-H @atom:H @atom:Ng @atom:H
+    @angle:H2-C-Ng @atom:H2 @atom:C @atom:Ng
+    @angle:H2-C-O @atom:H2 @atom:C @atom:O
+    @angle:Os-Cg-C @atom:Os @atom:Cg @atom:C
+    @angle:O2-C-Oh @atom:O2 @atom:C @atom:Oh
+    @angle:Os-Cy-Cg @atom:Os @atom:Cy @atom:Cg
+    @angle:Oh-Cy-Cg @atom:Oh @atom:Cy @atom:Cg
+    @angle:Oy-Cy-Cg @atom:Oy @atom:Cy @atom:Cg
+    @angle:Oh-Cy-C @atom:Oh @atom:Cy @atom:C
+    @angle:Os-Cy-C @atom:Os @atom:Cy @atom:C
+    @angle:Oy-Cy-C @atom:Oy @atom:Cy @atom:C
+    @angle:Oy-Cy-Oh @atom:Oy @atom:Cy @atom:Oh
+    @angle:Oy-Cy-Os @atom:Oy @atom:Cy @atom:Os
+    @angle:Cg-Cy-C @atom:Cg @atom:Cy @atom:C
+    @angle:Cg-Os-Cy @atom:Cg @atom:Os @atom:Cy
+    @angle:Cg-Oy-Cy @atom:Cg @atom:Oy @atom:Cy
+    @angle:O2-C-Cy @atom:O2 @atom:C @atom:Cy
+    @angle:Hc-Cg-Cy @atom:Hc @atom:Cg @atom:Cy
+    @angle:Cg-Cg-Cy @atom:Cg @atom:Cg @atom:Cy
+  } # (end of Angles By Type)
+
+  write_once("In Settings") {
+    dihedral_coeff @dihedral:Oy-Cy-Os-CT fourier 3 0.3 1 0.0 1.27 2 0.0 0.37 3 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:CT-Os-Cy-Cg fourier 1 0.16 3 0.0     # SCEE=1.0 SCNB=1.0 copy of Cg-Os-Cy-Cg from GLYCAM06
+    dihedral_coeff @dihedral:CT-Os-Cy-C fourier 1 1.9 1 0.0     # SCEE=1.0 SCNB=1.0 copy of Cg-Os-Cy-C from GLYCAM06
+    dihedral_coeff @dihedral:Cy-Os-CT-CT fourier 1 0.16 3 0.0     # SCEE=1.0 SCNB=1.0 copy of Cy-Os-Cg-Cg from GLYCAM06
+    dihedral_coeff @dihedral:Cy-Os-CT-H1 fourier 1 0.27 3 0.0     # SCEE=1.0 SCNB=1.0 copy of Cy-Os-Cg-H1 from GLYCAM06
+    dihedral_coeff @dihedral:O2-S-Ng-H fourier 1 -0.1 6 0.0     # SCEE=1.0 SCNB=1.0 N-Sulfates
+    dihedral_coeff @dihedral:O2-S-Ng-Cg fourier 3 0.11 3 0.0 0.0 2 0.0 0.0 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:S-Ng-Cg-H1 fourier 1 2.0 1 0.0     # SCEE=1.0 SCNB=1.0 N-Sulfates
+    dihedral_coeff @dihedral:S-Ng-Cg-Cg fourier 3 0.0 3 0.0 0.5 2 0.0 0.5 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Cg-Os-Cg-Sm fourier 3 0.67 3 0.0 1.9 2 0.0 1.14 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Os-Cg-Sm-Cg fourier 3 1.03 3 0.0 1.44 2 0.0 0.27 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:H2-Cg-Sm-Cg fourier 1 0.0 1 0.0     # SCEE=1.0 SCNB=1.0 (methoxymethyl)(methyl)sulfane
+    dihedral_coeff @dihedral:Sm-Cg-Cg-H2 fourier 3 0.28 3 0.0 0.04 2 0.0 -0.21 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Sm-Cg-Cg-Os fourier 3 0.03 3 0.0 0.18 2 0.0 -1.03 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Cg-Sm-Cg-H1 fourier 1 0.33 3 0.0     # SCEE=1.0 SCNB=1.0 Dimethylsulfane
+    dihedral_coeff @dihedral:Cg-Cg-Sm-Cg fourier 3 0.32 3 0.0 0.35 2 0.0 0.35 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Sm-Cg-Cg-Hc fourier 1 0.08 3 0.0     # SCEE=1.0 SCNB=1.0 Ethyl(methyl)sulfane
+    dihedral_coeff @dihedral:Sm-Cg-Cg-H1 fourier 3 0.15 3 0.0 -0.05 2 0.0 0.04 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Sm-Cg-Cg-Oh fourier 2 0.02 3 0.0 0.2 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Cg-Cg-Cg-Sm fourier 3 0.01 3 0.0 0.2 2 0.0 0.51 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:NH-Cg-Cg-Sm fourier 2 0.45 3 0.0 0.25 2 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:H-N3-Cg-Hp fourier 1 0.13 3 0.0     # SCEE=1.0 SCNB=1.0 Methanaminium
+    dihedral_coeff @dihedral:H-N3-Cg-Cg fourier 1 0.13 3 0.0     # SCEE=1.0 SCNB=1.0 Ethanaminium
+    dihedral_coeff @dihedral:Ck-Cg-Cg-Ng fourier 3 0.18 3 0.0 0.03 2 0.0 -0.22 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Cj-Cg-Cg-Ng fourier 3 0.18 3 0.0 0.03 2 0.0 -0.22 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:C-Cg-Cg-Cj fourier 3 -0.42 3 0.0 0.33 2 0.0 0.4 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:C-Cg-Cg-Ck fourier 3 -0.42 3 0.0 0.33 2 0.0 0.4 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:H1-Cg-Cg-Ck fourier 1 0.1 3 0.0     # SCEE=1.0 SCNB=1.0 Lipids, copy of Hc-Cg-Cg-Ck
+    dihedral_coeff @dihedral:H1-Cg-Cg-Cj fourier 1 0.1 3 0.0     # SCEE=1.0 SCNB=1.0 Lipids, copy of Hc-Cg-Cg-Cj
+    dihedral_coeff @dihedral:Oh-Cg-Cg-Ck fourier 3 -0.11 3 0.0 -0.16 2 0.0 -1.06 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Oh-Cg-Cg-Cj fourier 3 -0.11 3 0.0 -0.16 2 0.0 -1.06 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Os-Cj-Cj-Cg fourier 1 -13.0 2 0.0     # SCEE=1.0 SCNB=1.0 copy of Os-Ck-Ck-Cg
+    dihedral_coeff @dihedral:Os-Ck-Ck-Cg fourier 1 -13.0 2 0.0     # SCEE=1.0 SCNB=1.0 Lipids, from 1-propenylmethylether
+    dihedral_coeff @dihedral:Ck-Cj-Cj-Ha fourier 1 -15.0 2 0.0     # SCEE=1.0 SCNB=1.0 copy of Cj-Ck-Ck-Ha
+    dihedral_coeff @dihedral:Cj-Ck-Ck-Ha fourier 1 -15.0 2 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Cg-Os-Cj-Ha fourier 3 0.08 3 0.0 0.22 2 0.0 0.4 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Cg-Os-Ck-Ha fourier 3 0.08 3 0.0 0.22 2 0.0 0.4 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Os-Cj-Cj-Ha fourier 1 -20.0 2 0.0     # SCEE=1.0 SCNB=1.0 copy of Os-Ck-Ck-Ha
+    dihedral_coeff @dihedral:Os-Ck-Ck-Ha fourier 1 -20.0 2 0.0     # SCEE=1.0 SCNB=1.0 Lipids, from methoxyethene
+    dihedral_coeff @dihedral:H1-Cg-Os-Cj fourier 1 0.1 3 0.0     # SCEE=1.0 SCNB=1.0 copy of H1-Cg-Os-Ck
+    dihedral_coeff @dihedral:H1-Cg-Os-Ck fourier 1 0.1 3 0.0     # SCEE=1.0 SCNB=1.0 Lipids, from methoxyethene
+    dihedral_coeff @dihedral:Cg-Cg-Os-Cj fourier 3 -0.01 3 0.0 -0.42 2 0.0 0.22 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Cg-Cg-Os-Ck fourier 3 -0.01 3 0.0 -0.42 2 0.0 0.22 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Cg-Os-Cj-Cj fourier 3 -0.87 3 0.0 -3.99 2 0.0 -0.25 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Cg-Os-Ck-Ck fourier 3 -0.87 3 0.0 -3.99 2 0.0 -0.25 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Cj-Ck-Ck-Cj fourier 1 -2.0 2 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Ck-Cj-Cj-Ck fourier 1 -2.0 2 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Ck-Cg-Ck-Ck fourier 3 -0.04 3 0.0 -0.68 2 0.0 -0.21 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Cj-Cg-Ck-Ck fourier 3 -0.04 3 0.0 -0.68 2 0.0 -0.21 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Ck-Cg-Cj-Cj fourier 3 -0.04 3 0.0 -0.68 2 0.0 -0.21 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Cj-Cg-Cj-Cj fourier 3 -0.04 3 0.0 -0.68 2 0.0 -0.21 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Ck-Cg-Ck-Ha fourier 3 0.31 3 0.0 0.03 2 0.0 0.05 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Cj-Cg-Ck-Ha fourier 3 0.31 3 0.0 0.03 2 0.0 0.05 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Ck-Cg-Cj-Ha fourier 3 0.31 3 0.0 0.03 2 0.0 0.05 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Cj-Cg-Cj-Ha fourier 3 0.31 3 0.0 0.03 2 0.0 0.05 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Cj-Ck-Ck-Cg fourier 1 -3.5 2 0.0     # SCEE=1.0 SCNB=1.0 copy of Ck-Cj-Cj-Cg
+    dihedral_coeff @dihedral:Ck-Cj-Cj-Cg fourier 1 -3.5 2 0.0     # SCEE=1.0 SCNB=1.0 Lipids, from
+    dihedral_coeff @dihedral:Cg-Cg-Cj-Cg fourier 3 -0.01 3 0.0 -0.34 2 0.0 0.29 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Cg-Cg-Ck-Cg fourier 3 -0.01 3 0.0 -0.34 2 0.0 0.29 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Hc-Cg-Cj-Cg fourier 1 0.0 1 0.0     # SCEE=1.0 SCNB=1.0 copy of Hc-Cg-Ck-Cg,no term necessary
+    dihedral_coeff @dihedral:Hc-Cg-Ck-Cg fourier 1 0.0 1 0.0     # SCEE=1.0 SCNB=1.0 Lipids, no term necessary
+    dihedral_coeff @dihedral:Ha-Ck-Cj-Ha fourier 3 0.69 3 0.0 -1.75 2 0.0 0.92 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Ha-Cj-Ck-Ck fourier 3 0.17 3 0.0 0.4 2 0.0 0.69 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Ha-Ck-Cj-Cj fourier 3 0.17 3 0.0 0.4 2 0.0 0.69 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Cj-Cj-Ck-Ck fourier 3 0.69 3 0.0 -1.75 2 0.0 0.92 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Oh-Cg-Cj-Cj fourier 3 -0.5 3 0.0 -1.0 2 0.0 -0.5 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Oh-Cg-Ck-Ck fourier 3 -0.5 3 0.0 -1.0 2 0.0 -0.5 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Oh-Cg-Cj-Ha fourier 1 0.0 1 0.0     # SCEE=1.0 SCNB=1.0 Coupled to Oh-Cg-Ck-Ck, copy of Oh-Cg-Ck-Ha
+    dihedral_coeff @dihedral:Oh-Cg-Ck-Ha fourier 1 0.0 1 0.0     # SCEE=1.0 SCNB=1.0 Coupled to Oh-Cg-Ck-Ck
+    dihedral_coeff @dihedral:Ho-Oh-Cg-Cj fourier 3 0.2 3 0.0 0.58 2 0.0 0.38 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Ho-Oh-Cg-Ck fourier 3 0.2 3 0.0 0.58 2 0.0 0.38 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Cg-Cg-Cg-Cj fourier 1 0.0 3 0.0     # SCEE=1.0 SCNB=1.0 copy of Cg-Cg-Cg-Cj
+    dihedral_coeff @dihedral:Cg-Cg-Cg-Ck fourier 1 0.0 3 0.0     # SCEE=1.0 SCNB=1.0 Lipids
+    dihedral_coeff @dihedral:Cg-Cg-Cj-Cj fourier 2 -0.5 3 0.0 -0.4 2 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Cg-Cg-Ck-Ck fourier 2 -0.5 3 0.0 -0.4 2 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Cg-Cg-Cj-Ha fourier 1 0.0 1 0.0     # SCEE=1.0 SCNB=1.0 Lipids coupled to Cg-Cg-Ck-Ck, copy of Cg-Cg-Ck-Ha
+    dihedral_coeff @dihedral:Cg-Cg-Ck-Ha fourier 1 0.0 1 0.0     # SCEE=1.0 SCNB=1.0 Lipids coupled to Cg-Cg-Ck-Ck
+    dihedral_coeff @dihedral:Cg-Cj-Cj-Cg fourier 2 -15.0 2 0.0 0.5 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Cg-Ck-Ck-Cg fourier 2 -15.0 2 0.0 0.5 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Hc-Cg-Cg-Cj fourier 1 0.1 3 0.0     # SCEE=1.0 SCNB=1.0 copy of Hc-Cg-Cg-Ck
+    dihedral_coeff @dihedral:Hc-Cg-Cg-Ck fourier 1 0.1 3 0.0     # SCEE=1.0 SCNB=1.0 Lipids
+    dihedral_coeff @dihedral:H1-Cg-Cj-Cj fourier 1 -0.33 3 0.0     # SCEE=1.0 SCNB=1.0 Copy of Hc-Cg-Ck-Ck
+    dihedral_coeff @dihedral:H1-Cg-Ck-Ck fourier 1 -0.33 3 0.0     # SCEE=1.0 SCNB=1.0 Copy of Hc-Cg-Ck-Ck
+    dihedral_coeff @dihedral:Hc-Cg-Cj-Cj fourier 3 -0.34 3 0.0 -0.1 2 0.0 0.1 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Hc-Cg-Ck-Ck fourier 3 -0.34 3 0.0 -0.1 2 0.0 0.1 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Hc-Cg-Cj-Ha fourier 1 0.0 3 0.0     # SCEE=1.0 SCNB=1.0 Lipids coupled to Hc-Cg-Cj-Cj
+    dihedral_coeff @dihedral:Hc-Cg-Ck-Ha fourier 1 0.0 3 0.0     # SCEE=1.0 SCNB=1.0 Lipids coupled to Hc-Cg-Ck-Ck
+    dihedral_coeff @dihedral:H1-Cg-Cj-Ha fourier 1 0.0 3 0.0     # SCEE=1.0 SCNB=1.0 Copy of Hc-Cg-Ck-Ha
+    dihedral_coeff @dihedral:H1-Cg-Ck-Ha fourier 1 0.0 3 0.0     # SCEE=1.0 SCNB=1.0 Copy of Hc-Cg-Ck-Ha
+    dihedral_coeff @dihedral:Ha-Cj-Cj-Cg fourier 1 -21.0 2 0.0     # SCEE=1.0 SCNB=1.0 copy of Ha-Ck-Ck-Cg
+    dihedral_coeff @dihedral:Ha-Ck-Ck-Cg fourier 1 -21.0 2 0.0     # SCEE=1.0 SCNB=1.0 Lipids
+    dihedral_coeff @dihedral:Ha-Cj-Cj-Ha fourier 1 -8.5 2 0.0     # SCEE=1.0 SCNB=1.0 copy of Ha-Ck-Ck-Ha
+    dihedral_coeff @dihedral:Ha-Ck-Ck-Ha fourier 1 -8.5 2 0.0     # SCEE=1.0 SCNB=1.0 Lipids
+    dihedral_coeff @dihedral:Hp-Cg-Cp-Os fourier 1 0.05 3 0.0     # SCEE=1.0 SCNB=1.0 Copy of Hc-Cg-Cg-Os
+    dihedral_coeff @dihedral:Hp-Cg-Cg-Os fourier 1 0.05 3 0.0     # SCEE=1.0 SCNB=1.0 Copy of Hc-Cg-Cg-Os
+    dihedral_coeff @dihedral:Hp-Cg-Cp-H1 fourier 1 0.13 3 0.0     # SCEE=1.0 SCNB=1.0 Copy of Hc-Cg-Cg-Hc
+    dihedral_coeff @dihedral:Hp-Cg-Cg-H1 fourier 1 0.13 3 0.0     # SCEE=1.0 SCNB=1.0 Copy of Hc-Cg-Cg-Hc
+    dihedral_coeff @dihedral:Hp-Cg-Cg-Hc fourier 1 0.13 3 0.0     # SCEE=1.0 SCNB=1.0 Copy of Hc-Cg-Cg-Hc
+    dihedral_coeff @dihedral:Hp-Cg-Cg-Cg fourier 1 0.1 3 0.0     # SCEE=1.0 SCNB=1.0 Copy of Hc-Cg-Cg-Cg
+    dihedral_coeff @dihedral:Cg-N3-Cg-Cp fourier 3 0.1 3 0.0 -0.2 2 0.0 0.1 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Cg-N3-Cg-Cg fourier 3 0.1 3 0.0 -0.2 2 0.0 0.1 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Cg-NT-Cg-Cg fourier 3 0.1 3 0.0 -0.2 2 0.0 0.1 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:N3-Cg-Cg-Cg fourier 3 0.3 3 0.0 -0.1 2 0.0 0.1 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:NT-Cg-Cg-Cg fourier 3 0.3 3 0.0 -0.1 2 0.0 0.1 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:NT-Cg-Cg-Hc fourier 1 0.1 3 0.0     # SCEE=1.0 SCNB=1.0 N-ethyl amine
+    dihedral_coeff @dihedral:N3-Cg-Cg-Hc fourier 1 0.1 3 0.0     # SCEE=1.0 SCNB=1.0 Ethanaminium
+    dihedral_coeff @dihedral:NT-Cg-Cg-H1 fourier 1 0.1 3 0.0     # SCEE=1.0 SCNB=1.0 N-ethyl amine
+    dihedral_coeff @dihedral:N3-Cg-Cp-H1 fourier 1 0.1 3 0.0     # SCEE=1.0 SCNB=1.0 Copy of NT-Cg-Cg-H1
+    dihedral_coeff @dihedral:N3-Cg-Cg-H1 fourier 1 0.1 3 0.0     # SCEE=1.0 SCNB=1.0 Copy of NT-Cg-Cg-H1
+    dihedral_coeff @dihedral:NT-Cg-Cg-Os fourier 3 1.5 3 0.0 0.5 2 0.0 -0.5 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:N3-Cg-Cp-Os fourier 3 1.5 3 0.0 0.5 2 0.0 -0.5 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:N3-Cg-Cg-Os fourier 3 1.5 3 0.0 0.5 2 0.0 -0.5 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:NT-Cg-Cg-Oh fourier 3 0.6 3 0.0 0.5 2 0.0 -1.0 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:N3-Cg-Cg-Oh fourier 3 0.6 3 0.0 0.5 2 0.0 -1.0 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Hp-Cg-N3-Cg fourier 1 0.25 3 0.0     # SCEE=1.0 SCNB=1.0 Dimethylammonium
+    dihedral_coeff @dihedral:H1-Cg-NT-Cg fourier 1 0.25 3 0.0     # SCEE=1.0 SCNB=1.0 N,N-Dimethyl amine
+    dihedral_coeff @dihedral:Hc-Cg-NT-Cg fourier 1 0.25 3 0.0     # SCEE=1.0 SCNB=1.0 N,N-Dimethyl amine
+    dihedral_coeff @dihedral:Os-C-Cg-Cg fourier 1 0.2 3 0.0     # SCEE=1.0 SCNB=1.0 Methyl propanoate
+    dihedral_coeff @dihedral:Cg-Cg-NT-H fourier 1 0.2 3 0.0     # SCEE=1.0 SCNB=1.0 N-Ethyl amine
+    dihedral_coeff @dihedral:H1-Cg-NT-H fourier 1 0.17 3 0.0     # SCEE=1.0 SCNB=1.0 N-Methyl amine
+    dihedral_coeff @dihedral:Cp-Cg-Os-C fourier 2 -0.04 3 0.0 0.47 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:H1-Cg-Cp-H1 fourier 1 0.17 3 0.0     # SCEE=1.0 SCNB=1.0 Copy of H1-Cg-Cg-H1
+    dihedral_coeff @dihedral:H1-Cg-Cp-Cg fourier 1 0.15 3 0.0     # SCEE=1.0 SCNB=1.0 Copy of H1-Cg-Cg-Cg
+    dihedral_coeff @dihedral:H1-Cg-Cg-Cp fourier 1 0.15 3 0.0     # SCEE=1.0 SCNB=1.0 Copy of H1-Cg-Cg-Cg
+    dihedral_coeff @dihedral:H1-Cp-Cg-Cg fourier 1 0.15 3 0.0     # SCEE=1.0 SCNB=1.0 Copy of H1-Cg-Cg-Cg
+    dihedral_coeff @dihedral:Os-Cg-Cp-Cg fourier 1 -0.27 1 0.0     # SCEE=1.0 SCNB=1.0 Copy of Os-Cg-Cg-Cg
+    dihedral_coeff @dihedral:Os-Cp-Cg-Cg fourier 1 -0.27 1 0.0     # SCEE=1.0 SCNB=1.0 Copy of Os-Cg-Cg-Cg
+    dihedral_coeff @dihedral:Os-Cg-Cg-Cp fourier 1 -0.27 1 0.0     # SCEE=1.0 SCNB=1.0 Copy of Os-Cg-Cg-Cg
+    dihedral_coeff @dihedral:Cg-Os-Cp-Cg fourier 1 0.16 3 0.0     # SCEE=1.0 SCNB=1.0 Copy of Cg-Os-Cg-Cg
+    dihedral_coeff @dihedral:Cg-Os-Cg-Cp fourier 1 0.16 3 0.0     # SCEE=1.0 SCNB=1.0 Copy of Cg-Os-Cg-Cg
+    dihedral_coeff @dihedral:Cp-Os-Cg-Cg fourier 1 0.16 3 0.0     # SCEE=1.0 SCNB=1.0 Copy of Cg-Os-Cg-Cg
+    dihedral_coeff @dihedral:Oh-Cg-Cg-Hp fourier 1 0.05 3 0.0     # SCEE=1.0 SCNB=1.0 Tertbutanol
+    dihedral_coeff @dihedral:Os-Cg-Cp-Os fourier 1 0.4 2 0.0     # SCEE=1.0 SCNB=1.0 Copy of Os-Cg-Cg-Os
+    dihedral_coeff @dihedral:H1-Cp-Cg-Os fourier 1 0.05 3 0.0     # SCEE=1.0 SCNB=1.0 Copy of H1-Cg-Cg-Os
+    dihedral_coeff @dihedral:H1-Cg-Cp-Os fourier 1 0.05 3 0.0     # SCEE=1.0 SCNB=1.0 Copy of H1-Cg-Cg-Os
+    dihedral_coeff @dihedral:Ng-C-Cg-Cg fourier 3 0.2 3 0.0 -0.7 2 0.0 0.05 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:O-C-Cg-Cg fourier 3 0.5 3 0.0 -0.1 2 0.0 -0.05 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:CT-Os-Cg-Cg fourier 1 0.16 3 0.0     # SCEE=1.0 SCNB=1.0 Ethyl methyl ether, Isopropyl methyl ether for OLS,OLT
+    dihedral_coeff @dihedral:2C-Os-Cg-Cg fourier 1 0.16 3 0.0     # SCEE=1.0 SCNB=1.0 Ethyl methyl ether, Isopropyl methyl ether for OLS,OLT --copy of CT-Os-Cg-Cg
+    dihedral_coeff @dihedral:3C-Os-Cg-Cg fourier 1 0.16 3 0.0     # SCEE=1.0 SCNB=1.0 Ethyl methyl ether, Isopropyl methyl ether for OLS,OLT --copy of CT-Os-Cg-Cg
+    dihedral_coeff @dihedral:C-Cg-Oh-Ho fourier 1 0.9 2 0.0     # SCEE=1.0 SCNB=1.0 2-Hydroxy ethanamide
+    dihedral_coeff @dihedral:O-C-Cg-H1 fourier 1 0.0 3 0.0     # SCEE=1.0 SCNB=1.0 2-Hydroxy ethanamide
+    dihedral_coeff @dihedral:Ng-C-Cg-H1 fourier 1 0.0 3 0.0     # SCEE=1.0 SCNB=1.0 2-Hydroxy ethanamide (coupled to O -C -Cg-H1)
+    dihedral_coeff @dihedral:Ng-C-Cg-Oh fourier 3 0.2 3 0.0 -2.21 2 0.0 2.24 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:O-C-Cg-Oh fourier 1 0.0 3 0.0     # SCEE=1.0 SCNB=1.0 2-Hydroxy ethanamide (coupled to Ng-C -Cg-Oh)
+    dihedral_coeff @dihedral:H1-Cp-Os-P fourier 1 0.07 3 0.0     # SCEE=1.0 SCNB=1.0 Dimethyl phosphate
+    dihedral_coeff @dihedral:Os-P-Os-Cp fourier 2 0.5 3 0.0 0.7 2 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:O2-P-Os-Cp fourier 3 0.1 3 0.0 -0.5 2 0.0 0.1 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:P-Os-Cp-Cg fourier 3 0.1 3 0.0 0.05 2 0.0 -1.2 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:H2-Cp-Os-P fourier 1 0.07 3 0.0     # SCEE=1.0 SCNB=1.0 Dimethyl phosphate
+    dihedral_coeff @dihedral:Os-Cp-Os-P fourier 3 0.4 3 0.0 0.4 2 0.0 -0.5 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Cg-Os-S-O2 fourier 1 0.18 3 0.0     # SCEE=1.0 SCNB=1.0 Methyl sulphate - CH3OsO3
+    dihedral_coeff @dihedral:H1-Cg-Os-S fourier 1 0.17 3 0.0     # SCEE=1.0 SCNB=1.0 Methyl sulphate -CH3CH2OsO3
+    dihedral_coeff @dihedral:Cg-Cg-Os-S fourier 1 -1.2 1 0.0     # SCEE=1.0 SCNB=1.0 Ethyl sulphate - CH3OsO3
+    dihedral_coeff @dihedral:Os-Cg-Cg-C fourier 3 -0.1 3 0.0 0.1 2 0.0 -1.0 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Oh-Cg-Cg-C fourier 3 0.1 3 0.0 0.2 2 0.0 -2.5 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Cg-Cg-Os-C fourier 3 -0.01 3 0.0 0.04 2 0.0 0.12 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Cg-Os-C-O fourier 3 0.0 3 0.0 -2.9 2 0.0 0.6 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Cg-C-Os-Cg fourier 3 0.0 3 0.0 -2.9 2 0.0 -0.6 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:H1-Cg-Os-C fourier 1 0.0 3 0.0     # SCEE=1.0 SCNB=1.0 Methyl acetate
+    dihedral_coeff @dihedral:Os-C-Cg-Hc fourier 1 0.0 3 0.0     # SCEE=1.0 SCNB=1.0 Methyl acetate
+    dihedral_coeff @dihedral:Hc-Cg-Cg-Hc fourier 1 0.13 3 0.0     # SCEE=1.0 SCNB=1.0 Ethane
+    dihedral_coeff @dihedral:H1-Cg-Cg-Hc fourier 1 0.17 3 0.0     # SCEE=1.0 SCNB=1.0 Ethanol, after H1-Cg-Cg-Cg
+    dihedral_coeff @dihedral:H2-Cg-Cg-Hc fourier 1 0.17 3 0.0     # SCEE=1.0 SCNB=1.0 Ethanol, after H1-Cg-Cg-Cg
+    dihedral_coeff @dihedral:H1-Cg-Cg-H1 fourier 1 0.17 3 0.0     # SCEE=1.0 SCNB=1.0 Ethanol
+    dihedral_coeff @dihedral:H1-Cg-Cp-H2 fourier 1 0.17 3 0.0     # SCEE=1.0 SCNB=1.0 Copy of H1-Cg-Cg-H2
+    dihedral_coeff @dihedral:H1-Cg-Cg-H2 fourier 1 0.17 3 0.0     # SCEE=1.0 SCNB=1.0 Ethanol
+    dihedral_coeff @dihedral:Hc-Cg-Cg-Cg fourier 1 0.1 3 0.0     # SCEE=1.0 SCNB=1.0 Propane
+    dihedral_coeff @dihedral:H1-Cg-Cg-Cg fourier 1 0.15 3 0.0     # SCEE=1.0 SCNB=1.0 2,2-Dimethylbutanol
+    dihedral_coeff @dihedral:H2-Cp-Cg-Cg fourier 1 0.15 3 0.0     # SCEE=1.0 SCNB=1.0 Copy of H2-Cg-Cg-Cg
+    dihedral_coeff @dihedral:H2-Cg-Cg-Cg fourier 1 0.15 3 0.0     # SCEE=1.0 SCNB=1.0 2,2-Dimethylbutanol
+    dihedral_coeff @dihedral:Ho-Oh-Cg-H1 fourier 1 0.18 3 0.0     # SCEE=1.0 SCNB=1.0 Methanol
+    dihedral_coeff @dihedral:Ho-Oh-Cg-H2 fourier 1 0.18 3 0.0     # SCEE=1.0 SCNB=1.0 Copy of Ho-Oh-Cg-H1 (not derived)
+    dihedral_coeff @dihedral:Ho-Oh-Cy-Oy fourier 1 0.18 3 0.0     # SCEE=1.0 SCNB=1.0 - sialic acid only
+    dihedral_coeff @dihedral:Ho-Oh-Cy-C fourier 1 0.18 3 0.0     # SCEE=1.0 SCNB=1.0 - sialic acid only
+    dihedral_coeff @dihedral:Ho-Oh-Cy-Cg fourier 1 0.18 3 0.0     # SCEE=1.0 SCNB=1.0 - sialic acid only
+    dihedral_coeff @dihedral:Ho-Oh-Cg-Cg fourier 1 0.18 3 0.0     # SCEE=1.0 SCNB=1.0 Ethanol, propan-2-ol (Isopropanol)
+    dihedral_coeff @dihedral:Cg-Cg-Cp-Cg fourier 1 0.45 1 0.0     # SCEE=1.0 SCNB=1.0 Copy of Cg-Cg-Cg-Cg
+    dihedral_coeff @dihedral:Cg-Cg-Cg-Cp fourier 1 0.45 1 0.0     # SCEE=1.0 SCNB=1.0 Copy of Cg-Cg-Cg-Cg
+    dihedral_coeff @dihedral:Cg-Cg-Cg-Cg fourier 1 0.45 1 0.0     # SCEE=1.0 SCNB=1.0 Butane
+    dihedral_coeff @dihedral:Oh-Cg-Cg-Hc fourier 1 0.05 3 0.0     # SCEE=1.0 SCNB=1.0 tert-butanol
+    dihedral_coeff @dihedral:Oh-Cg-Cg-H1 fourier 1 0.05 3 0.0     # SCEE=1.0 SCNB=1.0 tert-butanol
+    dihedral_coeff @dihedral:Oh-Cg-Cg-H2 fourier 1 0.05 3 0.0     # SCEE=1.0 SCNB=1.0 tert-butanol
+    dihedral_coeff @dihedral:Oh-Cg-Cg-Cp fourier 1 0.1 3 0.0     # SCEE=1.0 SCNB=1.0 2,3-Dimethylbutanol
+    dihedral_coeff @dihedral:Oh-Cg-Cg-Cg fourier 1 0.1 3 0.0     # SCEE=1.0 SCNB=1.0 2,3-Dimethylbutanol
+    dihedral_coeff @dihedral:Os-Cg-Cg-Cg fourier 1 -0.27 1 0.0     # SCEE=1.0 SCNB=1.0 1-methoxypropane (Methylpropyl ether), 1-methoxy-2-methylpropane (Methyl 2-methylpropyl ether)
+    dihedral_coeff @dihedral:Os-Cg-Cg-Cy fourier 1 -0.27 1 0.0     # SCEE=1.0 SCNB=1.0 1-methoxypropane - sialic acid only 4-O link ABY 05/29/05
+    dihedral_coeff @dihedral:Oy-Cg-Cg-Cg fourier 1 -0.27 1 0.0     # SCEE=1.0 SCNB=1.0 1-methoxypropane - sialic acid only
+    dihedral_coeff @dihedral:H1-Cg-Os-Cp fourier 1 0.27 3 0.0     # SCEE=1.0 SCNB=1.0 Copy of H1-Cg-Os-Cg
+    dihedral_coeff @dihedral:H1-Cg-Os-Cg fourier 1 0.27 3 0.0     # SCEE=1.0 SCNB=1.0 Methoxymethane, 2-methoxy-2-methylpropane (Isobutyl methyl ether), etc
+    dihedral_coeff @dihedral:Cg-Os-Cg-Cg fourier 1 0.16 3 0.0     # SCEE=1.0 SCNB=1.0 Methoxyethane, 2-methoxypropane (Isopropyl methyl ether)
+    dihedral_coeff @dihedral:Oh-Cg-Cg-Oh fourier 3 -0.1 1 0.0 0.95 2 0.0 0.55 3 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Oh-Cg-Cg-Os fourier 2 -1.1 1 0.0 0.25 2 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Oh-Cg-Cg-Oy fourier 2 -1.1 1 0.0 0.25 2 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:H1-Cg-Cg-Oy fourier 1 0.05 3 0.0     # SCEE=1.0 SCNB=1.0 COPY OF H1-Cg-Cg-Os NOT DERIVED
+    dihedral_coeff @dihedral:Os-Cg-Cg-Os fourier 1 0.4 2 0.0     # SCEE=1.0 SCNB=1.0 DiEthers
+    dihedral_coeff @dihedral:Os-Cg-Cg-Oy fourier 1 0.82 2 0.0     # SCEE=1.0 SCNB=1.0 DiEthers - sialic acid only
+    dihedral_coeff @dihedral:Os-Cg-Oh-Ho fourier 1 0.18 3 0.0     # SCEE=1.0 SCNB=1.0 Copy of Ho-Oh-Cg-Cg (not derived)
+    dihedral_coeff @dihedral:Os-Cp-Os-Cg fourier 3 0.96 3 0.0 1.38 2 0.0 1.08 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Os-Cg-Os-Cg fourier 3 0.96 3 0.0 1.38 2 0.0 1.08 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Oh-Cg-Os-Cg fourier 3 0.96 3 0.0 1.38 2 0.0 1.08 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:H2-Cp-Os-Cg fourier 2 0.6 2 0.0 0.1 3 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:H2-Cg-Os-Cg fourier 2 0.6 2 0.0 0.1 3 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:H2-Cg-Os-CT fourier 2 0.6 2 0.0 0.1 3 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:H2-Cg-Os-2C fourier 2 0.6 2 0.0 0.1 3 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:H2-Cg-Os-3C fourier 2 0.6 2 0.0 0.1 3 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Hc-Cg-Cg-Os fourier 1 0.05 3 0.0     # SCEE=1.0 SCNB=1.0 Methoxyethane
+    dihedral_coeff @dihedral:Hc-CT-3C-Os fourier 1 0.05 3 0.0     # SCEE=1.0 SCNB=1.0 Methoxyethane -- copy of Hc-Cg-Cg-Os
+    dihedral_coeff @dihedral:H1-Cg-Cg-Os fourier 1 0.05 3 0.0     # SCEE=1.0 SCNB=1.0 Methoxyethane
+    dihedral_coeff @dihedral:H2-Cg-Cg-Os fourier 1 0.05 3 0.0     # SCEE=1.0 SCNB=1.0 Methoxyethane
+    dihedral_coeff @dihedral:H-Ng-C-H1 fourier 1 -2.5 2 0.0     # SCEE=1.2 SCNB=2.0 Parm94 - Corrected to remove phase shift
+    dihedral_coeff @dihedral:H-Ng-C-Cg fourier 1 0.0 1 0.0     # SCEE=1.0 SCNB=1.0 Ethanamide and N-Methylethanamide
+    dihedral_coeff @dihedral:Hc-Cg-C-O fourier 1 0.0 3 0.0     # SCEE=1.0 SCNB=1.0 Ethanamide
+    dihedral_coeff @dihedral:Hc-Cg-C-Ng fourier 1 0.0 3 0.0     # SCEE=1.0 SCNB=1.0 Ethanamide
+    dihedral_coeff @dihedral:Cg-Os-Cg-N fourier 1 -0.9 1 0.0     # SCEE=1.0 SCNB=1.0 Copy of Cg-Os-Cg-Ng from GLYCAM06
+    dihedral_coeff @dihedral:Cg-Os-Cg-Ng fourier 1 -0.9 1 0.0     # SCEE=1.0 SCNB=1.0 N-(2-Methoxyisopropyl)-ethanamide, N-(2-Methoxyethyl)-ethanamide
+    dihedral_coeff @dihedral:Os-Cp-Cg-Ng fourier 1 -1.3 1 0.0     # SCEE=1.0 SCNB=1.0 N-(2-methoxyethyl)-ethanamide, N-(2-methyoxy-2-methyl-propyl)-ethanmide
+    dihedral_coeff @dihedral:Os-Cg-Cg-Ng fourier 1 -1.3 1 0.0     # SCEE=1.0 SCNB=1.0 N-(2-methoxyethyl)-ethanamide, N-(2-methyoxy-2-methyl-propyl)-ethanmide
+    dihedral_coeff @dihedral:Oy-Cg-Cg-Ng fourier 1 -1.3 1 0.0     # SCEE=1.0 SCNB=1.0 N-(2-methoxyethyl)-ethanamide - sialic acid only
+    dihedral_coeff @dihedral:Oh-Cg-Cg-N fourier 1 -1.5 1 0.0     # SCEE=1.0 SCNB=1.0 Copy of Oh-Cg-Cg-Ng from GLYCAM06
+    dihedral_coeff @dihedral:Oh-Cg-Cg-Ng fourier 1 -1.5 1 0.0     # SCEE=1.0 SCNB=1.0 N-(2-hydroxyethyl)-ethanamide, N-(2-Hydroxy-2-methyl-propyl)-ethanmide
+    dihedral_coeff @dihedral:Cp-Cg-Cg-Ng fourier 1 0.4 1 0.0     # SCEE=1.0 SCNB=1.0 Copy of Cg-Cg-Cg-N
+    dihedral_coeff @dihedral:Cg-Cg-Cg-N fourier 1 0.4 1 0.0     # SCEE=1.0 SCNB=1.0 Copy of Cg-Cg-Cg-Ng from GLYCAM06
+    dihedral_coeff @dihedral:Cg-Cg-Cg-Ng fourier 1 0.4 1 0.0     # SCEE=1.0 SCNB=1.0 N-(1,1,2,2-tetramethyl-propyl)-ethanamide, N-propyl-ethanamide
+    dihedral_coeff @dihedral:Hc-Cg-Cg-Ng fourier 1 0.1 3 0.0     # SCEE=1.0 SCNB=1.0 N-tert-butylethanamide (N-isobutylethanamide)
+    dihedral_coeff @dihedral:H1-Cg-Cg-N fourier 1 0.1 3 0.0     # SCEE=1.0 SCNB=1.0 Copy of H1-Cg-Cg-Ng from GLYCAM06
+    dihedral_coeff @dihedral:H1-Cg-Cg-Ng fourier 1 0.1 3 0.0     # SCEE=1.0 SCNB=1.0 N-tert-butylethanamide
+    dihedral_coeff @dihedral:H2-Cp-Cg-Ng fourier 1 0.1 3 0.0     # SCEE=1.0 SCNB=1.0 Copy of H2-Cg-Cg-N
+    dihedral_coeff @dihedral:H2-Cg-Cg-Ng fourier 1 0.1 3 0.0     # SCEE=1.0 SCNB=1.0 N-tert-butylethanamide
+    dihedral_coeff @dihedral:Ng-Cg-Cg-Ng fourier 1 0.0 1 0.0     # SCEE=1.0 SCNB=1.0 N-(N-ethylethanamide)-ethanamide
+    dihedral_coeff @dihedral:N-Cg-Cg-Ng fourier 1 0.0 1 0.0     # SCEE=1.0 SCNB=1.0 N-(N-ethylethanamide)-ethanamide
+    dihedral_coeff @dihedral:Hc-Cg-Cg-C fourier 1 0.1 3 0.0     # SCEE=1.0 SCNB=1.0 Propane
+    dihedral_coeff @dihedral:H1-Cg-Cg-C fourier 1 0.1 3 0.0     # SCEE=1.0 SCNB=1.0 Propane
+    dihedral_coeff @dihedral:Cg-Cg-Cg-C fourier 1 0.45 1 0.0     # SCEE=1.0 SCNB=1.0 Butane
+    dihedral_coeff @dihedral:Cp-Cg-Ng-C fourier 1 0.0 3 0.0     # SCEE=1.0 SCNB=1.0 Copy of Cg-Cg-Ng-C
+    dihedral_coeff @dihedral:Cg-Cg-N-C fourier 1 0.0 3 0.0     # SCEE=1.0 SCNB=1.0 Copy of Cg-Cg-Ng-C from GLYCAM06
+    dihedral_coeff @dihedral:Cg-Cg-Ng-C fourier 1 0.0 3 0.0     # SCEE=1.0 SCNB=1.0 N-tert-butylethanamide, N-Isopropylethanamide
+    dihedral_coeff @dihedral:Os-Cg-N-C fourier 2 2.03 2 0.0 1.0 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Os-Cg-Ng-C fourier 2 2.03 2 0.0 1.0 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Os-Cg-N-H fourier 2 -0.43 2 0.0 1.52 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Os-Cg-Ng-H fourier 2 -0.43 2 0.0 1.52 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Cp-Cg-Ng-H fourier 1 0.1 3 0.0     # SCEE=1.0 SCNB=1.0 Copy of Cg-Cg-Ng-H
+    dihedral_coeff @dihedral:Cg-Cg-N-H fourier 1 0.1 3 0.0     # SCEE=1.0 SCNB=1.0 Copy of Cg-Cg-Ng-H from GLYCAM06
+    dihedral_coeff @dihedral:Cg-Cg-Ng-H fourier 1 0.1 3 0.0     # SCEE=1.0 SCNB=1.0 N-tert-butylethanamide, N-Isopropylethanamide
+    dihedral_coeff @dihedral:H1-Cg-Ng-Cg fourier 1 0.0 3 0.0     # SCEE=1.0 SCNB=1.0 N,N-Dimethylethanamide coupled to H1-Cg-N-C
+    dihedral_coeff @dihedral:H2-Cg-Ng-Cg fourier 1 0.0 3 0.0     # SCEE=1.0 SCNB=1.0 N,N-Dimethylethanamide coupled to H1-Cg-N-C
+    dihedral_coeff @dihedral:H1-Cg-Ng-H fourier 1 1.0 1 0.0     # SCEE=1.0 SCNB=1.0 N-Isopropylethanamide Coupled to H1-Cg-N-C
+    dihedral_coeff @dihedral:H2-Cg-N-H fourier 1 1.0 1 0.0     # SCEE=1.0 SCNB=1.0 Copy of H2-Cg-Ng-H from GLYCAM06
+    dihedral_coeff @dihedral:H2-Cg-Ng-H fourier 1 1.0 1 0.0     # SCEE=1.0 SCNB=1.0 N-Isopropylethanamide Coupled to H1-Cg-N-C
+    dihedral_coeff @dihedral:H1-Cg-Ng-C fourier 1 -1.0 1 0.0     # SCEE=1.0 SCNB=1.0 N,N-Dimethylethanamide, N-Isopropylethanamide
+    dihedral_coeff @dihedral:H2-Cg-N-C fourier 1 -1.0 1 0.0     # SCEE=1.0 SCNB=1.0 Copy of H2-Cg-Ng-C from GLYCAM06
+    dihedral_coeff @dihedral:H2-Cg-Ng-C fourier 1 -1.0 1 0.0     # SCEE=1.0 SCNB=1.0 N,N-Dimethylethanamide, N-Isopropylethanamide
+    dihedral_coeff @dihedral:Cg-Ng-C-O fourier 1 -2.8 2 0.0     # SCEE=1.0 SCNB=1.0 N-Methylethanamide, N-tert-butylethanamide
+    dihedral_coeff @dihedral:Cg-Ng-C-Cg fourier 1 -2.7 2 0.0     # SCEE=1.0 SCNB=1.0 N-Methylethanamide, N-tertbutylethanamide
+    dihedral_coeff @dihedral:Hc-Cg-C-O2 fourier 1 0.0 1 0.0     # SCEE=1.0 SCNB=1.0 Acetate
+    dihedral_coeff @dihedral:Cg-Cg-C-O2 fourier 3 0.01 3 0.0 -0.41 2 0.0 0.005 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:H1-Cg-C-O2 fourier 1 0.0 1 0.0     # SCEE=1.0 SCNB=1.0 2-Methylpropanoate
+    dihedral_coeff @dihedral:H2-Cg-C-O2 fourier 1 0.0 1 0.0     # SCEE=1.0 SCNB=1.0 1,1-Dimethoxyacetate
+    dihedral_coeff @dihedral:Os-Cg-C-O2 fourier 3 0.02 3 0.0 -0.725 2 0.0 0.02 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Cg-Os-Cg-C fourier 3 0.32 3 0.0 0.45 2 0.0 -0.6 1 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:H1-CT-Os-Cg fourier 1 0.27 3 0.0     # SCEE=1.0 SCNB=1.0 Protein Linkage: Methoxymethane, Isobutyl methyl ether (2-methoxy-2-methylpropane), etc
+    dihedral_coeff @dihedral:H1-2C-Os-Cg fourier 1 0.27 3 0.0     # SCEE=1.0 SCNB=1.0 Protein Linkage: Methoxymethane, Isobutyl methyl ether (2-methoxy-2-methylpropane), etc
+    dihedral_coeff @dihedral:H1-3C-Os-Cg fourier 1 0.27 3 0.0     # SCEE=1.0 SCNB=1.0 Protein Linkage: Methoxymethane, Isobutyl methyl ether (2-methoxy-2-methylpropane), etc
+    dihedral_coeff @dihedral:Cg-Os-CT-CT fourier 1 0.16 3 0.0     # SCEE=1.0 SCNB=1.0 Protein Linkage: Methoxyethane, 2-methoxypropane
+    dihedral_coeff @dihedral:Cg-Os-CT-CX fourier 1 0.16 3 0.0     # SCEE=1.0 SCNB=1.0 Protein Linkage: Methoxyethane, 2-methoxypropane
+    dihedral_coeff @dihedral:Cg-Os-3C-CT fourier 1 0.16 3 0.0     # SCEE=1.0 SCNB=1.0 Protein Linkage: Methoxyethane, 2-methoxypropane
+    dihedral_coeff @dihedral:Cg-Os-2C-CX fourier 1 0.16 3 0.0     # SCEE=1.0 SCNB=1.0 Protein Linkage: Methoxyethane, 2-methoxypropane
+    dihedral_coeff @dihedral:Cg-Os-3C-CX fourier 1 0.16 3 0.0     # SCEE=1.0 SCNB=1.0 Protein Linkage: Methoxyethane, 2-methoxypropane
+    dihedral_coeff @dihedral:Os-Cg-Os-CT fourier 3 0.3 1 0.0 1.27 2 0.0 0.37 3 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Os-Cg-Os-2C fourier 3 0.3 1 0.0 1.27 2 0.0 0.37 3 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Os-Cg-Os-3C fourier 3 0.3 1 0.0 1.27 2 0.0 0.37 3 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Cg-Ng-C-CT fourier 1 0.0 2 0.0     # SCEE=1.0 SCNB=1.0 Protein Linkage: N-Methylethanamide, N-Isobutylethanamide
+    dihedral_coeff @dihedral:Oy-Cy-Os-Cg fourier 3 0.3 1 0.0 1.27 2 0.0 0.37 3 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Oh-Cy-Oy-Cg fourier 3 0.3 1 0.0 1.27 2 0.0 0.37 3 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Os-Cy-Oy-Cg fourier 3 0.3 1 0.0 1.27 2 0.0 0.37 3 0.0     # SCEE=1.0 SCNB=1.0
+    dihedral_coeff @dihedral:Oh-Cy-Cg-Cg fourier 1 -0.27 1 0.0     # SCEE=1.0 SCNB=1.0 - for sialic acid only
+    dihedral_coeff @dihedral:Os-Cy-Cg-Cg fourier 1 -0.27 1 0.0     # SCEE=1.0 SCNB=1.0 1-methoxypropane, Methyl 2-methylpropyl ether (1-methoxy-2-methylpropane) - for sialic acid only!
+    dihedral_coeff @dihedral:Oy-Cy-Cg-Cg fourier 1 -0.27 1 0.0     # SCEE=1.0 SCNB=1.0 1-methoxypropane, 1-methoxy-2-methylpropane - for sialic acid only!
+    dihedral_coeff @dihedral:Oh-Cy-Cg-Hc fourier 1 0.05 3 0.0     # SCEE=1.0 SCNB=1.0 - for sialic acid only!
+    dihedral_coeff @dihedral:Os-Cy-Cg-Hc fourier 1 0.05 3 0.0     # SCEE=1.0 SCNB=1.0 Methoxyethane - for sialic acid only!
+    dihedral_coeff @dihedral:Oy-Cy-Cg-Hc fourier 1 0.05 3 0.0     # SCEE=1.0 SCNB=1.0 Methoxyethane - for sialic acid only!
+    dihedral_coeff @dihedral:Cg-Os-Cy-Cg fourier 1 0.16 3 0.0     # SCEE=1.0 SCNB=1.0 Methoxyethane, 2-methoxypropane - for sialic acid only!
+    dihedral_coeff @dihedral:Cg-Oy-Cy-Cg fourier 1 0.16 3 0.0     # SCEE=1.0 SCNB=1.0 Methoxyethane, 2-methoxypropane - for sialic acid only!
+    dihedral_coeff @dihedral:Oh-Cy-C-O2 fourier 1 -1.125 2 0.0     # SCEE=1.0 SCNB=1.0 - for sialic acid only!
+    dihedral_coeff @dihedral:Os-Cy-C-O2 fourier 1 -1.125 2 0.0     # SCEE=1.0 SCNB=1.0 2-Methoxy-2-methylpropanoate - for sialic acid only!
+    dihedral_coeff @dihedral:Oy-Cy-C-O2 fourier 1 -1.125 2 0.0     # SCEE=1.0 SCNB=1.0 2-Methoxy-2-methylpropanoate - for sialic acid only!
+    dihedral_coeff @dihedral:Cg-Cy-C-O2 fourier 1 -0.75 2 0.0     # SCEE=1.0 SCNB=1.0 Propanoate, 2-Methylpropanoate, 2-Dimethylpropanoate - for sialic acid only!
+    dihedral_coeff @dihedral:Cg-Os-Cy-C fourier 1 1.9 1 0.0     # SCEE=1.0 SCNB=1.0 1-Methoxy-1-Acetate THP, 1-Methoxy-1-Acetate THP Acid w/ Hbond - for sialic acid only!
+    dihedral_coeff @dihedral:Cg-Oy-Cy-C fourier 1 0.0 1 0.0     # SCEE=1.0 SCNB=1.0 1-Methoxy-1-Acetate THP, 1-Methoxy-1-Acetate THP Acid w/ Hbond - for sialic acid only!
+    dihedral_coeff @dihedral:Hc-Cg-Cy-C fourier 1 0.1 3 0.0     # SCEE=1.0 SCNB=1.0 Propane - for sialic acid only!
+    dihedral_coeff @dihedral:Cg-Cg-Cy-C fourier 1 0.45 3 0.0     # SCEE=1.0 SCNB=1.0 Butane - for sialic acid only!
+    dihedral_coeff @dihedral:Cy-Os-Cg-Cg fourier 1 0.16 3 0.0     # SCEE=1.0 SCNB=1.0 Methoxyethane, 2-methoxypropane - for sialic acid only!
+    dihedral_coeff @dihedral:Cy-Oy-Cg-Cg fourier 1 0.16 3 0.0     # SCEE=1.0 SCNB=1.0 Methoxyethane, 2-methoxypropane - for sialic acid only!
+    dihedral_coeff @dihedral:Cy-Os-Cg-H1 fourier 1 0.27 3 0.0     # SCEE=1.0 SCNB=1.0 Methoxymethane, 2-methoxy-2-methylpropane, etc - for sialic acid only!
+    dihedral_coeff @dihedral:Cy-Oy-Cg-H1 fourier 1 0.27 3 0.0     # SCEE=1.0 SCNB=1.0 Methoxymethane, 2-methoxy-2-methylpropane, etc - for sialic acid only!
+    dihedral_coeff @dihedral:Cy-Cg-Cg-Cg fourier 1 0.45 1 0.0     # SCEE=1.0 SCNB=1.0 Butane - for sialic acid only!
+    dihedral_coeff @dihedral:Cy-Cg-Cg-Hc fourier 1 0.1 3 0.0     # SCEE=1.0 SCNB=1.0 Propane - for sialic acid only!
+    dihedral_coeff @dihedral:Cy-Cg-Cg-H1 fourier 1 0.15 3 0.0     # SCEE=1.0 SCNB=1.0 2-Dimethylbutanol - for sialic acid only!
+    dihedral_coeff @dihedral:Cy-Cg-Cg-Oh fourier 1 0.1 3 0.0     # SCEE=1.0 SCNB=1.0 2,3-Dimethylbutanol - for sialic acid only!
+    dihedral_coeff @dihedral:H-Ng-C-O fourier 2 2.5 2 180.0 2.0 1 0.0     # SCEE=1.2 SCNB=2.0
+    dihedral_coeff @dihedral:HC-CT-3C-Os fourier 2 0.0 3 0.0 0.25 1 0.0     # Copied from ff12SB/parm10 HC-CT-3C-OS/OH, leaving scaling factors as-is
+  } # (end of dihedral_coeffs)
+
+  write_once("Data Dihedrals By Type") {
+    @dihedral:Oy-Cy-Os-CT @atom:Oy @atom:Cy @atom:Os @atom:CT
+    @dihedral:CT-Os-Cy-Cg @atom:CT @atom:Os @atom:Cy @atom:Cg
+    @dihedral:CT-Os-Cy-C @atom:CT @atom:Os @atom:Cy @atom:C
+    @dihedral:Cy-Os-CT-CT @atom:Cy @atom:Os @atom:CT @atom:CT
+    @dihedral:Cy-Os-CT-H1 @atom:Cy @atom:Os @atom:CT @atom:H1
+    @dihedral:O2-S-Ng-H @atom:O2 @atom:S @atom:Ng @atom:H
+    @dihedral:O2-S-Ng-Cg @atom:O2 @atom:S @atom:Ng @atom:Cg
+    @dihedral:S-Ng-Cg-H1 @atom:S @atom:Ng @atom:Cg @atom:H1
+    @dihedral:S-Ng-Cg-Cg @atom:S @atom:Ng @atom:Cg @atom:Cg
+    @dihedral:Cg-Os-Cg-Sm @atom:Cg @atom:Os @atom:Cg @atom:Sm
+    @dihedral:Os-Cg-Sm-Cg @atom:Os @atom:Cg @atom:Sm @atom:Cg
+    @dihedral:H2-Cg-Sm-Cg @atom:H2 @atom:Cg @atom:Sm @atom:Cg
+    @dihedral:Sm-Cg-Cg-H2 @atom:Sm @atom:Cg @atom:Cg @atom:H2
+    @dihedral:Sm-Cg-Cg-Os @atom:Sm @atom:Cg @atom:Cg @atom:Os
+    @dihedral:Cg-Sm-Cg-H1 @atom:Cg @atom:Sm @atom:Cg @atom:H1
+    @dihedral:Cg-Cg-Sm-Cg @atom:Cg @atom:Cg @atom:Sm @atom:Cg
+    @dihedral:Sm-Cg-Cg-Hc @atom:Sm @atom:Cg @atom:Cg @atom:Hc
+    @dihedral:Sm-Cg-Cg-H1 @atom:Sm @atom:Cg @atom:Cg @atom:H1
+    @dihedral:Sm-Cg-Cg-Oh @atom:Sm @atom:Cg @atom:Cg @atom:Oh
+    @dihedral:Cg-Cg-Cg-Sm @atom:Cg @atom:Cg @atom:Cg @atom:Sm
+    @dihedral:NH-Cg-Cg-Sm @atom:NH @atom:Cg @atom:Cg @atom:Sm
+    @dihedral:H-N3-Cg-Hp @atom:H @atom:N3 @atom:Cg @atom:Hp
+    @dihedral:H-N3-Cg-Cg @atom:H @atom:N3 @atom:Cg @atom:Cg
+    @dihedral:Ck-Cg-Cg-Ng @atom:Ck @atom:Cg @atom:Cg @atom:Ng
+    @dihedral:Cj-Cg-Cg-Ng @atom:Cj @atom:Cg @atom:Cg @atom:Ng
+    @dihedral:C-Cg-Cg-Cj @atom:C @atom:Cg @atom:Cg @atom:Cj
+    @dihedral:C-Cg-Cg-Ck @atom:C @atom:Cg @atom:Cg @atom:Ck
+    @dihedral:H1-Cg-Cg-Ck @atom:H1 @atom:Cg @atom:Cg @atom:Ck
+    @dihedral:H1-Cg-Cg-Cj @atom:H1 @atom:Cg @atom:Cg @atom:Cj
+    @dihedral:Oh-Cg-Cg-Ck @atom:Oh @atom:Cg @atom:Cg @atom:Ck
+    @dihedral:Oh-Cg-Cg-Cj @atom:Oh @atom:Cg @atom:Cg @atom:Cj
+    @dihedral:Os-Cj-Cj-Cg @atom:Os @atom:Cj @atom:Cj @atom:Cg
+    @dihedral:Os-Ck-Ck-Cg @atom:Os @atom:Ck @atom:Ck @atom:Cg
+    @dihedral:Ck-Cj-Cj-Ha @atom:Ck @atom:Cj @atom:Cj @atom:Ha
+    @dihedral:Cj-Ck-Ck-Ha @atom:Cj @atom:Ck @atom:Ck @atom:Ha
+    @dihedral:Cg-Os-Cj-Ha @atom:Cg @atom:Os @atom:Cj @atom:Ha
+    @dihedral:Cg-Os-Ck-Ha @atom:Cg @atom:Os @atom:Ck @atom:Ha
+    @dihedral:Os-Cj-Cj-Ha @atom:Os @atom:Cj @atom:Cj @atom:Ha
+    @dihedral:Os-Ck-Ck-Ha @atom:Os @atom:Ck @atom:Ck @atom:Ha
+    @dihedral:H1-Cg-Os-Cj @atom:H1 @atom:Cg @atom:Os @atom:Cj
+    @dihedral:H1-Cg-Os-Ck @atom:H1 @atom:Cg @atom:Os @atom:Ck
+    @dihedral:Cg-Cg-Os-Cj @atom:Cg @atom:Cg @atom:Os @atom:Cj
+    @dihedral:Cg-Cg-Os-Ck @atom:Cg @atom:Cg @atom:Os @atom:Ck
+    @dihedral:Cg-Os-Cj-Cj @atom:Cg @atom:Os @atom:Cj @atom:Cj
+    @dihedral:Cg-Os-Ck-Ck @atom:Cg @atom:Os @atom:Ck @atom:Ck
+    @dihedral:Cj-Ck-Ck-Cj @atom:Cj @atom:Ck @atom:Ck @atom:Cj
+    @dihedral:Ck-Cj-Cj-Ck @atom:Ck @atom:Cj @atom:Cj @atom:Ck
+    @dihedral:Ck-Cg-Ck-Ck @atom:Ck @atom:Cg @atom:Ck @atom:Ck
+    @dihedral:Cj-Cg-Ck-Ck @atom:Cj @atom:Cg @atom:Ck @atom:Ck
+    @dihedral:Ck-Cg-Cj-Cj @atom:Ck @atom:Cg @atom:Cj @atom:Cj
+    @dihedral:Cj-Cg-Cj-Cj @atom:Cj @atom:Cg @atom:Cj @atom:Cj
+    @dihedral:Ck-Cg-Ck-Ha @atom:Ck @atom:Cg @atom:Ck @atom:Ha
+    @dihedral:Cj-Cg-Ck-Ha @atom:Cj @atom:Cg @atom:Ck @atom:Ha
+    @dihedral:Ck-Cg-Cj-Ha @atom:Ck @atom:Cg @atom:Cj @atom:Ha
+    @dihedral:Cj-Cg-Cj-Ha @atom:Cj @atom:Cg @atom:Cj @atom:Ha
+    @dihedral:Cj-Ck-Ck-Cg @atom:Cj @atom:Ck @atom:Ck @atom:Cg
+    @dihedral:Ck-Cj-Cj-Cg @atom:Ck @atom:Cj @atom:Cj @atom:Cg
+    @dihedral:Cg-Cg-Cj-Cg @atom:Cg @atom:Cg @atom:Cj @atom:Cg
+    @dihedral:Cg-Cg-Ck-Cg @atom:Cg @atom:Cg @atom:Ck @atom:Cg
+    @dihedral:Hc-Cg-Cj-Cg @atom:Hc @atom:Cg @atom:Cj @atom:Cg
+    @dihedral:Hc-Cg-Ck-Cg @atom:Hc @atom:Cg @atom:Ck @atom:Cg
+    @dihedral:Ha-Ck-Cj-Ha @atom:Ha @atom:Ck @atom:Cj @atom:Ha
+    @dihedral:Ha-Cj-Ck-Ck @atom:Ha @atom:Cj @atom:Ck @atom:Ck
+    @dihedral:Ha-Ck-Cj-Cj @atom:Ha @atom:Ck @atom:Cj @atom:Cj
+    @dihedral:Cj-Cj-Ck-Ck @atom:Cj @atom:Cj @atom:Ck @atom:Ck
+    @dihedral:Oh-Cg-Cj-Cj @atom:Oh @atom:Cg @atom:Cj @atom:Cj
+    @dihedral:Oh-Cg-Ck-Ck @atom:Oh @atom:Cg @atom:Ck @atom:Ck
+    @dihedral:Oh-Cg-Cj-Ha @atom:Oh @atom:Cg @atom:Cj @atom:Ha
+    @dihedral:Oh-Cg-Ck-Ha @atom:Oh @atom:Cg @atom:Ck @atom:Ha
+    @dihedral:Ho-Oh-Cg-Cj @atom:Ho @atom:Oh @atom:Cg @atom:Cj
+    @dihedral:Ho-Oh-Cg-Ck @atom:Ho @atom:Oh @atom:Cg @atom:Ck
+    @dihedral:Cg-Cg-Cg-Cj @atom:Cg @atom:Cg @atom:Cg @atom:Cj
+    @dihedral:Cg-Cg-Cg-Ck @atom:Cg @atom:Cg @atom:Cg @atom:Ck
+    @dihedral:Cg-Cg-Cj-Cj @atom:Cg @atom:Cg @atom:Cj @atom:Cj
+    @dihedral:Cg-Cg-Ck-Ck @atom:Cg @atom:Cg @atom:Ck @atom:Ck
+    @dihedral:Cg-Cg-Cj-Ha @atom:Cg @atom:Cg @atom:Cj @atom:Ha
+    @dihedral:Cg-Cg-Ck-Ha @atom:Cg @atom:Cg @atom:Ck @atom:Ha
+    @dihedral:Cg-Cj-Cj-Cg @atom:Cg @atom:Cj @atom:Cj @atom:Cg
+    @dihedral:Cg-Ck-Ck-Cg @atom:Cg @atom:Ck @atom:Ck @atom:Cg
+    @dihedral:Hc-Cg-Cg-Cj @atom:Hc @atom:Cg @atom:Cg @atom:Cj
+    @dihedral:Hc-Cg-Cg-Ck @atom:Hc @atom:Cg @atom:Cg @atom:Ck
+    @dihedral:H1-Cg-Cj-Cj @atom:H1 @atom:Cg @atom:Cj @atom:Cj
+    @dihedral:H1-Cg-Ck-Ck @atom:H1 @atom:Cg @atom:Ck @atom:Ck
+    @dihedral:Hc-Cg-Cj-Cj @atom:Hc @atom:Cg @atom:Cj @atom:Cj
+    @dihedral:Hc-Cg-Ck-Ck @atom:Hc @atom:Cg @atom:Ck @atom:Ck
+    @dihedral:Hc-Cg-Cj-Ha @atom:Hc @atom:Cg @atom:Cj @atom:Ha
+    @dihedral:Hc-Cg-Ck-Ha @atom:Hc @atom:Cg @atom:Ck @atom:Ha
+    @dihedral:H1-Cg-Cj-Ha @atom:H1 @atom:Cg @atom:Cj @atom:Ha
+    @dihedral:H1-Cg-Ck-Ha @atom:H1 @atom:Cg @atom:Ck @atom:Ha
+    @dihedral:Ha-Cj-Cj-Cg @atom:Ha @atom:Cj @atom:Cj @atom:Cg
+    @dihedral:Ha-Ck-Ck-Cg @atom:Ha @atom:Ck @atom:Ck @atom:Cg
+    @dihedral:Ha-Cj-Cj-Ha @atom:Ha @atom:Cj @atom:Cj @atom:Ha
+    @dihedral:Ha-Ck-Ck-Ha @atom:Ha @atom:Ck @atom:Ck @atom:Ha
+    @dihedral:Hp-Cg-Cp-Os @atom:Hp @atom:Cg @atom:Cp @atom:Os
+    @dihedral:Hp-Cg-Cg-Os @atom:Hp @atom:Cg @atom:Cg @atom:Os
+    @dihedral:Hp-Cg-Cp-H1 @atom:Hp @atom:Cg @atom:Cp @atom:H1
+    @dihedral:Hp-Cg-Cg-H1 @atom:Hp @atom:Cg @atom:Cg @atom:H1
+    @dihedral:Hp-Cg-Cg-Hc @atom:Hp @atom:Cg @atom:Cg @atom:Hc
+    @dihedral:Hp-Cg-Cg-Cg @atom:Hp @atom:Cg @atom:Cg @atom:Cg
+    @dihedral:Cg-N3-Cg-Cp @atom:Cg @atom:N3 @atom:Cg @atom:Cp
+    @dihedral:Cg-N3-Cg-Cg @atom:Cg @atom:N3 @atom:Cg @atom:Cg
+    @dihedral:Cg-NT-Cg-Cg @atom:Cg @atom:NT @atom:Cg @atom:Cg
+    @dihedral:N3-Cg-Cg-Cg @atom:N3 @atom:Cg @atom:Cg @atom:Cg
+    @dihedral:NT-Cg-Cg-Cg @atom:NT @atom:Cg @atom:Cg @atom:Cg
+    @dihedral:NT-Cg-Cg-Hc @atom:NT @atom:Cg @atom:Cg @atom:Hc
+    @dihedral:N3-Cg-Cg-Hc @atom:N3 @atom:Cg @atom:Cg @atom:Hc
+    @dihedral:NT-Cg-Cg-H1 @atom:NT @atom:Cg @atom:Cg @atom:H1
+    @dihedral:N3-Cg-Cp-H1 @atom:N3 @atom:Cg @atom:Cp @atom:H1
+    @dihedral:N3-Cg-Cg-H1 @atom:N3 @atom:Cg @atom:Cg @atom:H1
+    @dihedral:NT-Cg-Cg-Os @atom:NT @atom:Cg @atom:Cg @atom:Os
+    @dihedral:N3-Cg-Cp-Os @atom:N3 @atom:Cg @atom:Cp @atom:Os
+    @dihedral:N3-Cg-Cg-Os @atom:N3 @atom:Cg @atom:Cg @atom:Os
+    @dihedral:NT-Cg-Cg-Oh @atom:NT @atom:Cg @atom:Cg @atom:Oh
+    @dihedral:N3-Cg-Cg-Oh @atom:N3 @atom:Cg @atom:Cg @atom:Oh
+    @dihedral:Hp-Cg-N3-Cg @atom:Hp @atom:Cg @atom:N3 @atom:Cg
+    @dihedral:H1-Cg-NT-Cg @atom:H1 @atom:Cg @atom:NT @atom:Cg
+    @dihedral:Hc-Cg-NT-Cg @atom:Hc @atom:Cg @atom:NT @atom:Cg
+    @dihedral:Os-C-Cg-Cg @atom:Os @atom:C @atom:Cg @atom:Cg
+    @dihedral:Cg-Cg-NT-H @atom:Cg @atom:Cg @atom:NT @atom:H
+    @dihedral:H1-Cg-NT-H @atom:H1 @atom:Cg @atom:NT @atom:H
+    @dihedral:Cp-Cg-Os-C @atom:Cp @atom:Cg @atom:Os @atom:C
+    @dihedral:H1-Cg-Cp-H1 @atom:H1 @atom:Cg @atom:Cp @atom:H1
+    @dihedral:H1-Cg-Cp-Cg @atom:H1 @atom:Cg @atom:Cp @atom:Cg
+    @dihedral:H1-Cg-Cg-Cp @atom:H1 @atom:Cg @atom:Cg @atom:Cp
+    @dihedral:H1-Cp-Cg-Cg @atom:H1 @atom:Cp @atom:Cg @atom:Cg
+    @dihedral:Os-Cg-Cp-Cg @atom:Os @atom:Cg @atom:Cp @atom:Cg
+    @dihedral:Os-Cp-Cg-Cg @atom:Os @atom:Cp @atom:Cg @atom:Cg
+    @dihedral:Os-Cg-Cg-Cp @atom:Os @atom:Cg @atom:Cg @atom:Cp
+    @dihedral:Cg-Os-Cp-Cg @atom:Cg @atom:Os @atom:Cp @atom:Cg
+    @dihedral:Cg-Os-Cg-Cp @atom:Cg @atom:Os @atom:Cg @atom:Cp
+    @dihedral:Cp-Os-Cg-Cg @atom:Cp @atom:Os @atom:Cg @atom:Cg
+    @dihedral:Oh-Cg-Cg-Hp @atom:Oh @atom:Cg @atom:Cg @atom:Hp
+    @dihedral:Os-Cg-Cp-Os @atom:Os @atom:Cg @atom:Cp @atom:Os
+    @dihedral:H1-Cp-Cg-Os @atom:H1 @atom:Cp @atom:Cg @atom:Os
+    @dihedral:H1-Cg-Cp-Os @atom:H1 @atom:Cg @atom:Cp @atom:Os
+    @dihedral:Ng-C-Cg-Cg @atom:Ng @atom:C @atom:Cg @atom:Cg
+    @dihedral:O-C-Cg-Cg @atom:O @atom:C @atom:Cg @atom:Cg
+    @dihedral:CT-Os-Cg-Cg @atom:CT @atom:Os @atom:Cg @atom:Cg
+    @dihedral:2C-Os-Cg-Cg @atom:2C @atom:Os @atom:Cg @atom:Cg
+    @dihedral:3C-Os-Cg-Cg @atom:3C @atom:Os @atom:Cg @atom:Cg
+    @dihedral:C-Cg-Oh-Ho @atom:C @atom:Cg @atom:Oh @atom:Ho
+    @dihedral:O-C-Cg-H1 @atom:O @atom:C @atom:Cg @atom:H1
+    @dihedral:Ng-C-Cg-H1 @atom:Ng @atom:C @atom:Cg @atom:H1
+    @dihedral:Ng-C-Cg-Oh @atom:Ng @atom:C @atom:Cg @atom:Oh
+    @dihedral:O-C-Cg-Oh @atom:O @atom:C @atom:Cg @atom:Oh
+    @dihedral:H1-Cp-Os-P @atom:H1 @atom:Cp @atom:Os @atom:P
+    @dihedral:Os-P-Os-Cp @atom:Os @atom:P @atom:Os @atom:Cp
+    @dihedral:O2-P-Os-Cp @atom:O2 @atom:P @atom:Os @atom:Cp
+    @dihedral:P-Os-Cp-Cg @atom:P @atom:Os @atom:Cp @atom:Cg
+    @dihedral:H2-Cp-Os-P @atom:H2 @atom:Cp @atom:Os @atom:P
+    @dihedral:Os-Cp-Os-P @atom:Os @atom:Cp @atom:Os @atom:P
+    @dihedral:Cg-Os-S-O2 @atom:Cg @atom:Os @atom:S @atom:O2
+    @dihedral:H1-Cg-Os-S @atom:H1 @atom:Cg @atom:Os @atom:S
+    @dihedral:Cg-Cg-Os-S @atom:Cg @atom:Cg @atom:Os @atom:S
+    @dihedral:Os-Cg-Cg-C @atom:Os @atom:Cg @atom:Cg @atom:C
+    @dihedral:Oh-Cg-Cg-C @atom:Oh @atom:Cg @atom:Cg @atom:C
+    @dihedral:Cg-Cg-Os-C @atom:Cg @atom:Cg @atom:Os @atom:C
+    @dihedral:Cg-Os-C-O @atom:Cg @atom:Os @atom:C @atom:O
+    @dihedral:Cg-C-Os-Cg @atom:Cg @atom:C @atom:Os @atom:Cg
+    @dihedral:H1-Cg-Os-C @atom:H1 @atom:Cg @atom:Os @atom:C
+    @dihedral:Os-C-Cg-Hc @atom:Os @atom:C @atom:Cg @atom:Hc
+    @dihedral:Hc-Cg-Cg-Hc @atom:Hc @atom:Cg @atom:Cg @atom:Hc
+    @dihedral:H1-Cg-Cg-Hc @atom:H1 @atom:Cg @atom:Cg @atom:Hc
+    @dihedral:H2-Cg-Cg-Hc @atom:H2 @atom:Cg @atom:Cg @atom:Hc
+    @dihedral:H1-Cg-Cg-H1 @atom:H1 @atom:Cg @atom:Cg @atom:H1
+    @dihedral:H1-Cg-Cp-H2 @atom:H1 @atom:Cg @atom:Cp @atom:H2
+    @dihedral:H1-Cg-Cg-H2 @atom:H1 @atom:Cg @atom:Cg @atom:H2
+    @dihedral:Hc-Cg-Cg-Cg @atom:Hc @atom:Cg @atom:Cg @atom:Cg
+    @dihedral:H1-Cg-Cg-Cg @atom:H1 @atom:Cg @atom:Cg @atom:Cg
+    @dihedral:H2-Cp-Cg-Cg @atom:H2 @atom:Cp @atom:Cg @atom:Cg
+    @dihedral:H2-Cg-Cg-Cg @atom:H2 @atom:Cg @atom:Cg @atom:Cg
+    @dihedral:Ho-Oh-Cg-H1 @atom:Ho @atom:Oh @atom:Cg @atom:H1
+    @dihedral:Ho-Oh-Cg-H2 @atom:Ho @atom:Oh @atom:Cg @atom:H2
+    @dihedral:Ho-Oh-Cy-Oy @atom:Ho @atom:Oh @atom:Cy @atom:Oy
+    @dihedral:Ho-Oh-Cy-C @atom:Ho @atom:Oh @atom:Cy @atom:C
+    @dihedral:Ho-Oh-Cy-Cg @atom:Ho @atom:Oh @atom:Cy @atom:Cg
+    @dihedral:Ho-Oh-Cg-Cg @atom:Ho @atom:Oh @atom:Cg @atom:Cg
+    @dihedral:Cg-Cg-Cp-Cg @atom:Cg @atom:Cg @atom:Cp @atom:Cg
+    @dihedral:Cg-Cg-Cg-Cp @atom:Cg @atom:Cg @atom:Cg @atom:Cp
+    @dihedral:Cg-Cg-Cg-Cg @atom:Cg @atom:Cg @atom:Cg @atom:Cg
+    @dihedral:Oh-Cg-Cg-Hc @atom:Oh @atom:Cg @atom:Cg @atom:Hc
+    @dihedral:Oh-Cg-Cg-H1 @atom:Oh @atom:Cg @atom:Cg @atom:H1
+    @dihedral:Oh-Cg-Cg-H2 @atom:Oh @atom:Cg @atom:Cg @atom:H2
+    @dihedral:Oh-Cg-Cg-Cp @atom:Oh @atom:Cg @atom:Cg @atom:Cp
+    @dihedral:Oh-Cg-Cg-Cg @atom:Oh @atom:Cg @atom:Cg @atom:Cg
+    @dihedral:Os-Cg-Cg-Cg @atom:Os @atom:Cg @atom:Cg @atom:Cg
+    @dihedral:Os-Cg-Cg-Cy @atom:Os @atom:Cg @atom:Cg @atom:Cy
+    @dihedral:Oy-Cg-Cg-Cg @atom:Oy @atom:Cg @atom:Cg @atom:Cg
+    @dihedral:H1-Cg-Os-Cp @atom:H1 @atom:Cg @atom:Os @atom:Cp
+    @dihedral:H1-Cg-Os-Cg @atom:H1 @atom:Cg @atom:Os @atom:Cg
+    @dihedral:Cg-Os-Cg-Cg @atom:Cg @atom:Os @atom:Cg @atom:Cg
+    @dihedral:Oh-Cg-Cg-Oh @atom:Oh @atom:Cg @atom:Cg @atom:Oh
+    @dihedral:Oh-Cg-Cg-Os @atom:Oh @atom:Cg @atom:Cg @atom:Os
+    @dihedral:Oh-Cg-Cg-Oy @atom:Oh @atom:Cg @atom:Cg @atom:Oy
+    @dihedral:H1-Cg-Cg-Oy @atom:H1 @atom:Cg @atom:Cg @atom:Oy
+    @dihedral:Os-Cg-Cg-Os @atom:Os @atom:Cg @atom:Cg @atom:Os
+    @dihedral:Os-Cg-Cg-Oy @atom:Os @atom:Cg @atom:Cg @atom:Oy
+    @dihedral:Os-Cg-Oh-Ho @atom:Os @atom:Cg @atom:Oh @atom:Ho
+    @dihedral:Os-Cp-Os-Cg @atom:Os @atom:Cp @atom:Os @atom:Cg
+    @dihedral:Os-Cg-Os-Cg @atom:Os @atom:Cg @atom:Os @atom:Cg
+    @dihedral:Oh-Cg-Os-Cg @atom:Oh @atom:Cg @atom:Os @atom:Cg
+    @dihedral:H2-Cp-Os-Cg @atom:H2 @atom:Cp @atom:Os @atom:Cg
+    @dihedral:H2-Cg-Os-Cg @atom:H2 @atom:Cg @atom:Os @atom:Cg
+    @dihedral:H2-Cg-Os-CT @atom:H2 @atom:Cg @atom:Os @atom:CT
+    @dihedral:H2-Cg-Os-2C @atom:H2 @atom:Cg @atom:Os @atom:2C
+    @dihedral:H2-Cg-Os-3C @atom:H2 @atom:Cg @atom:Os @atom:3C
+    @dihedral:Hc-Cg-Cg-Os @atom:Hc @atom:Cg @atom:Cg @atom:Os
+    @dihedral:Hc-CT-3C-Os @atom:Hc @atom:CT @atom:3C @atom:Os
+    @dihedral:H1-Cg-Cg-Os @atom:H1 @atom:Cg @atom:Cg @atom:Os
+    @dihedral:H2-Cg-Cg-Os @atom:H2 @atom:Cg @atom:Cg @atom:Os
+    @dihedral:H-Ng-C-H1 @atom:H @atom:Ng @atom:C @atom:H1
+    @dihedral:H-Ng-C-Cg @atom:H @atom:Ng @atom:C @atom:Cg
+    @dihedral:Hc-Cg-C-O @atom:Hc @atom:Cg @atom:C @atom:O
+    @dihedral:Hc-Cg-C-Ng @atom:Hc @atom:Cg @atom:C @atom:Ng
+    @dihedral:Cg-Os-Cg-N @atom:Cg @atom:Os @atom:Cg @atom:N
+    @dihedral:Cg-Os-Cg-Ng @atom:Cg @atom:Os @atom:Cg @atom:Ng
+    @dihedral:Os-Cp-Cg-Ng @atom:Os @atom:Cp @atom:Cg @atom:Ng
+    @dihedral:Os-Cg-Cg-Ng @atom:Os @atom:Cg @atom:Cg @atom:Ng
+    @dihedral:Oy-Cg-Cg-Ng @atom:Oy @atom:Cg @atom:Cg @atom:Ng
+    @dihedral:Oh-Cg-Cg-N @atom:Oh @atom:Cg @atom:Cg @atom:N
+    @dihedral:Oh-Cg-Cg-Ng @atom:Oh @atom:Cg @atom:Cg @atom:Ng
+    @dihedral:Cp-Cg-Cg-Ng @atom:Cp @atom:Cg @atom:Cg @atom:Ng
+    @dihedral:Cg-Cg-Cg-N @atom:Cg @atom:Cg @atom:Cg @atom:N
+    @dihedral:Cg-Cg-Cg-Ng @atom:Cg @atom:Cg @atom:Cg @atom:Ng
+    @dihedral:Hc-Cg-Cg-Ng @atom:Hc @atom:Cg @atom:Cg @atom:Ng
+    @dihedral:H1-Cg-Cg-N @atom:H1 @atom:Cg @atom:Cg @atom:N
+    @dihedral:H1-Cg-Cg-Ng @atom:H1 @atom:Cg @atom:Cg @atom:Ng
+    @dihedral:H2-Cp-Cg-Ng @atom:H2 @atom:Cp @atom:Cg @atom:Ng
+    @dihedral:H2-Cg-Cg-Ng @atom:H2 @atom:Cg @atom:Cg @atom:Ng
+    @dihedral:Ng-Cg-Cg-Ng @atom:Ng @atom:Cg @atom:Cg @atom:Ng
+    @dihedral:N-Cg-Cg-Ng @atom:N @atom:Cg @atom:Cg @atom:Ng
+    @dihedral:Hc-Cg-Cg-C @atom:Hc @atom:Cg @atom:Cg @atom:C
+    @dihedral:H1-Cg-Cg-C @atom:H1 @atom:Cg @atom:Cg @atom:C
+    @dihedral:Cg-Cg-Cg-C @atom:Cg @atom:Cg @atom:Cg @atom:C
+    @dihedral:Cp-Cg-Ng-C @atom:Cp @atom:Cg @atom:Ng @atom:C
+    @dihedral:Cg-Cg-N-C @atom:Cg @atom:Cg @atom:N @atom:C
+    @dihedral:Cg-Cg-Ng-C @atom:Cg @atom:Cg @atom:Ng @atom:C
+    @dihedral:Os-Cg-N-C @atom:Os @atom:Cg @atom:N @atom:C
+    @dihedral:Os-Cg-Ng-C @atom:Os @atom:Cg @atom:Ng @atom:C
+    @dihedral:Os-Cg-N-H @atom:Os @atom:Cg @atom:N @atom:H
+    @dihedral:Os-Cg-Ng-H @atom:Os @atom:Cg @atom:Ng @atom:H
+    @dihedral:Cp-Cg-Ng-H @atom:Cp @atom:Cg @atom:Ng @atom:H
+    @dihedral:Cg-Cg-N-H @atom:Cg @atom:Cg @atom:N @atom:H
+    @dihedral:Cg-Cg-Ng-H @atom:Cg @atom:Cg @atom:Ng @atom:H
+    @dihedral:H1-Cg-Ng-Cg @atom:H1 @atom:Cg @atom:Ng @atom:Cg
+    @dihedral:H2-Cg-Ng-Cg @atom:H2 @atom:Cg @atom:Ng @atom:Cg
+    @dihedral:H1-Cg-Ng-H @atom:H1 @atom:Cg @atom:Ng @atom:H
+    @dihedral:H2-Cg-N-H @atom:H2 @atom:Cg @atom:N @atom:H
+    @dihedral:H2-Cg-Ng-H @atom:H2 @atom:Cg @atom:Ng @atom:H
+    @dihedral:H1-Cg-Ng-C @atom:H1 @atom:Cg @atom:Ng @atom:C
+    @dihedral:H2-Cg-N-C @atom:H2 @atom:Cg @atom:N @atom:C
+    @dihedral:H2-Cg-Ng-C @atom:H2 @atom:Cg @atom:Ng @atom:C
+    @dihedral:Cg-Ng-C-O @atom:Cg @atom:Ng @atom:C @atom:O
+    @dihedral:Cg-Ng-C-Cg @atom:Cg @atom:Ng @atom:C @atom:Cg
+    @dihedral:Hc-Cg-C-O2 @atom:Hc @atom:Cg @atom:C @atom:O2
+    @dihedral:Cg-Cg-C-O2 @atom:Cg @atom:Cg @atom:C @atom:O2
+    @dihedral:H1-Cg-C-O2 @atom:H1 @atom:Cg @atom:C @atom:O2
+    @dihedral:H2-Cg-C-O2 @atom:H2 @atom:Cg @atom:C @atom:O2
+    @dihedral:Os-Cg-C-O2 @atom:Os @atom:Cg @atom:C @atom:O2
+    @dihedral:Cg-Os-Cg-C @atom:Cg @atom:Os @atom:Cg @atom:C
+    @dihedral:H1-CT-Os-Cg @atom:H1 @atom:CT @atom:Os @atom:Cg
+    @dihedral:H1-2C-Os-Cg @atom:H1 @atom:2C @atom:Os @atom:Cg
+    @dihedral:H1-3C-Os-Cg @atom:H1 @atom:3C @atom:Os @atom:Cg
+    @dihedral:Cg-Os-CT-CT @atom:Cg @atom:Os @atom:CT @atom:CT
+    @dihedral:Cg-Os-CT-CX @atom:Cg @atom:Os @atom:CT @atom:CX
+    @dihedral:Cg-Os-3C-CT @atom:Cg @atom:Os @atom:3C @atom:CT
+    @dihedral:Cg-Os-2C-CX @atom:Cg @atom:Os @atom:2C @atom:CX
+    @dihedral:Cg-Os-3C-CX @atom:Cg @atom:Os @atom:3C @atom:CX
+    @dihedral:Os-Cg-Os-CT @atom:Os @atom:Cg @atom:Os @atom:CT
+    @dihedral:Os-Cg-Os-2C @atom:Os @atom:Cg @atom:Os @atom:2C
+    @dihedral:Os-Cg-Os-3C @atom:Os @atom:Cg @atom:Os @atom:3C
+    @dihedral:Cg-Ng-C-CT @atom:Cg @atom:Ng @atom:C @atom:CT
+    @dihedral:Oy-Cy-Os-Cg @atom:Oy @atom:Cy @atom:Os @atom:Cg
+    @dihedral:Oh-Cy-Oy-Cg @atom:Oh @atom:Cy @atom:Oy @atom:Cg
+    @dihedral:Os-Cy-Oy-Cg @atom:Os @atom:Cy @atom:Oy @atom:Cg
+    @dihedral:Oh-Cy-Cg-Cg @atom:Oh @atom:Cy @atom:Cg @atom:Cg
+    @dihedral:Os-Cy-Cg-Cg @atom:Os @atom:Cy @atom:Cg @atom:Cg
+    @dihedral:Oy-Cy-Cg-Cg @atom:Oy @atom:Cy @atom:Cg @atom:Cg
+    @dihedral:Oh-Cy-Cg-Hc @atom:Oh @atom:Cy @atom:Cg @atom:Hc
+    @dihedral:Os-Cy-Cg-Hc @atom:Os @atom:Cy @atom:Cg @atom:Hc
+    @dihedral:Oy-Cy-Cg-Hc @atom:Oy @atom:Cy @atom:Cg @atom:Hc
+    @dihedral:Cg-Os-Cy-Cg @atom:Cg @atom:Os @atom:Cy @atom:Cg
+    @dihedral:Cg-Oy-Cy-Cg @atom:Cg @atom:Oy @atom:Cy @atom:Cg
+    @dihedral:Oh-Cy-C-O2 @atom:Oh @atom:Cy @atom:C @atom:O2
+    @dihedral:Os-Cy-C-O2 @atom:Os @atom:Cy @atom:C @atom:O2
+    @dihedral:Oy-Cy-C-O2 @atom:Oy @atom:Cy @atom:C @atom:O2
+    @dihedral:Cg-Cy-C-O2 @atom:Cg @atom:Cy @atom:C @atom:O2
+    @dihedral:Cg-Os-Cy-C @atom:Cg @atom:Os @atom:Cy @atom:C
+    @dihedral:Cg-Oy-Cy-C @atom:Cg @atom:Oy @atom:Cy @atom:C
+    @dihedral:Hc-Cg-Cy-C @atom:Hc @atom:Cg @atom:Cy @atom:C
+    @dihedral:Cg-Cg-Cy-C @atom:Cg @atom:Cg @atom:Cy @atom:C
+    @dihedral:Cy-Os-Cg-Cg @atom:Cy @atom:Os @atom:Cg @atom:Cg
+    @dihedral:Cy-Oy-Cg-Cg @atom:Cy @atom:Oy @atom:Cg @atom:Cg
+    @dihedral:Cy-Os-Cg-H1 @atom:Cy @atom:Os @atom:Cg @atom:H1
+    @dihedral:Cy-Oy-Cg-H1 @atom:Cy @atom:Oy @atom:Cg @atom:H1
+    @dihedral:Cy-Cg-Cg-Cg @atom:Cy @atom:Cg @atom:Cg @atom:Cg
+    @dihedral:Cy-Cg-Cg-Hc @atom:Cy @atom:Cg @atom:Cg @atom:Hc
+    @dihedral:Cy-Cg-Cg-H1 @atom:Cy @atom:Cg @atom:Cg @atom:H1
+    @dihedral:Cy-Cg-Cg-Oh @atom:Cy @atom:Cg @atom:Cg @atom:Oh
+    @dihedral:H-Ng-C-O @atom:H @atom:Ng @atom:C @atom:O
+    @dihedral:HC-CT-3C-Os @atom:HC @atom:CT @atom:3C @atom:Os
+  } # (end of Dihedrals By Type)
+
+  write_once("In Settings") {
+    improper_coeff @improper:Cg-Os-C-O cvff 10.5 -1 2    # Parm94
+    improper_coeff @improper:Cg-Ng-C-O cvff 10.5 -1 2    # Parm94
+    improper_coeff @improper:Os-Ng-C-O cvff 10.5 -1 2    # Parm94
+    improper_coeff @improper:Ng-H2-C-O cvff 10.5 -1 2    # Parm94
+    improper_coeff @improper:Cg-H1-C-O cvff 10.5 -1 2    # Parm94
+    improper_coeff @improper:Os-H2-C-O cvff 10.5 -1 2    # Parm94
+    improper_coeff @improper:Cg-O2-C-O2 cvff 10.5 -1 2    # Parm94
+    improper_coeff @improper:Cy-O2-C-O2 cvff 10.5 -1 2    # Parm94
+    improper_coeff @improper:Cg-O2-C-Oh cvff 10.5 -1 2    # X -O2-C -O2
+    improper_coeff @improper:Cy-O2-C-Oh cvff 10.5 -1 2    # X -O2-C -O2
+    improper_coeff @improper:C-H-Ng-Cg cvff 1.5 -1 2    # X -X -Ng-H for GLYCAM 06
+    improper_coeff @improper:H-H-Ng-Cg cvff 1.5 -1 2    # X -X -Ng-H for GLYCAM 06
+    improper_coeff @improper:S-Cg-Ng-H cvff 5.5 -1 2    # GLYCAM 06 Sulfamates
+    improper_coeff @improper:S-H-Ng-H cvff 5.5 -1 2    # GLYCAM 06 Sulfamates
+    improper_coeff @improper:Cg-S-Ng-H cvff 5.5 -1 2    # GLYCAM 06 Sulfamates
+  } # (end of improper_coeffs)
+
+  write_once("Data Impropers By Type (gaff_imp.py)") {
+    @improper:Cg-Os-C-O @atom:Cg @atom:Os @atom:C @atom:O
+    @improper:Cg-Ng-C-O @atom:Cg @atom:Ng @atom:C @atom:O
+    @improper:Os-Ng-C-O @atom:Os @atom:Ng @atom:C @atom:O
+    @improper:Ng-H2-C-O @atom:Ng @atom:H2 @atom:C @atom:O
+    @improper:Cg-H1-C-O @atom:Cg @atom:H1 @atom:C @atom:O
+    @improper:Os-H2-C-O @atom:Os @atom:H2 @atom:C @atom:O
+    @improper:Cg-O2-C-O2 @atom:Cg @atom:O2 @atom:C @atom:O2
+    @improper:Cy-O2-C-O2 @atom:Cy @atom:O2 @atom:C @atom:O2
+    @improper:Cg-O2-C-Oh @atom:Cg @atom:O2 @atom:C @atom:Oh
+    @improper:Cy-O2-C-Oh @atom:Cy @atom:O2 @atom:C @atom:Oh
+    @improper:C-H-Ng-Cg @atom:C @atom:H @atom:Ng @atom:Cg
+    @improper:H-H-Ng-Cg @atom:H @atom:H @atom:Ng @atom:Cg
+    @improper:S-Cg-Ng-H @atom:S @atom:Cg @atom:Ng @atom:H
+    @improper:S-H-Ng-H @atom:S @atom:H @atom:Ng @atom:H
+    @improper:Cg-S-Ng-H @atom:Cg @atom:S @atom:Ng @atom:H
+  } # (end of Impropers By Type)
+
+
+  write_once("In Init") {
+    # Default styles and settings for AMBER based force-fields:
+    units           real
+    atom_style      full
+    bond_style      hybrid harmonic
+    angle_style     hybrid harmonic
+    dihedral_style  hybrid fourier
+    improper_style  hybrid cvff
+    pair_style      hybrid lj/charmm/coul/long 9.0 10.0 10.0
+    kspace_style    pppm 0.0001
+
+    # NOTE: If you do not want to use long-range coulombic forces,
+    #       comment out the two lines above and uncomment this line:
+    # pair_style      hybrid lj/charmm/coul/charmm 9.0 10.0
+
+    pair_modify     mix arithmetic
+    special_bonds   amber
+  }
+
+} # glycam06j
+

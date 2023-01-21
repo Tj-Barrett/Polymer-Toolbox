@@ -1,0 +1,63 @@
+# CelluloseL
+celluloseL inherits glycam06j {
+
+  # atom-id  mol-id   atom-type  charge   x             y                z
+
+  write("Data Atoms") {
+	$atom:C1   $mol:... @atom:Cg	 0.0     -4.623400   1.412500  -0.412700
+	$atom:C2   $mol:... @atom:Cg	 0.0     -4.125700   2.220400   0.839300
+	$atom:O3   $mol:... @atom:Oh	 0.0  -2.203300  -1.125700   0.681700
+	$atom:O4   $mol:... @atom:Os	 0.0     -2.807700   1.872100   1.289300
+	$atom:O0   $mol:... @atom:Os	 0.0     -0.710600   1.117100   0.720200
+	$atom:H6   $mol:... @atom:Ho	 0.0  -2.272900  -1.969100   0.162200
+	$atom:H7   $mol:... @atom:H1	 0.0     -4.798300   1.944600   1.681200
+	$atom:O8   $mol:... @atom:Oh	 0.0  -3.431700   4.183500  -0.407000
+	$atom:C9   $mol:... @atom:Cg	 0.0     -4.183600  -0.047200  -0.228200
+	$atom:O10  $mol:... @atom:Oh	 0.0  -6.014200   1.532700  -0.589400
+	$atom:H11  $mol:... @atom:Ho	 0.0  -6.458600   1.174300   0.221900
+	$atom:C12  $mol:... @atom:Cg	 0.0     -2.628700  -0.092200  -0.170600
+	$atom:O13  $mol:... @atom:Oh	 0.0  -4.735100  -0.527500   0.976600
+	$atom:H14  $mol:... @atom:Ho	 0.0  -4.806400  -1.514400   0.893100
+	$atom:C15  $mol:... @atom:Cg	 0.0     -2.030300   1.274400   0.270800
+	$atom:H17  $mol:... @atom:H1	 0.0     -4.140400   1.788200  -1.341300
+	$atom:H18  $mol:... @atom:H1	 0.0     -4.543600  -0.678800  -1.074400
+	$atom:H19  $mol:... @atom:H1	 0.0  	 -2.202600  -0.254700  -1.189000
+	$atom:C20  $mol:... @atom:Cg	 0.0 	 -4.253700   3.737300   0.638100
+	$atom:H21  $mol:... @atom:Ho     0.0  -2.538700   4.363900  -0.012400
+	$atom:H22  $mol:... @atom:H1	 0.0     -4.004900   4.270900   1.584500
+	$atom:H23  $mol:... @atom:H1	 0.0     -5.305500   3.998700   0.395800
+	$atom:H24  $mol:... @atom:H1	 0.0     -2.013000   1.982900  -0.591800
+
+  }
+  write('Data Bonds') {
+    $bond:CC1 @bond:Cg-Cg  $atom:C1 $atom:C2
+    $bond:CC2 @bond:Cg-Cg  $atom:C2 $atom:C20
+    $bond:CC3 @bond:Cg-Cg  $atom:C1 $atom:C9
+    $bond:CC4 @bond:Cg-Cg  $atom:C9 $atom:C12
+    $bond:CC5 @bond:Cg-Cg  $atom:C12 $atom:C15
+    $bond:COH1  @bond:Cg-Oh $atom:C20 $atom:O8
+    $bond:COH2  @bond:Cg-Oh $atom:C1  $atom:O10
+    $bond:COH3  @bond:Cg-Oh $atom:C9  $atom:O13
+    $bond:COH4  @bond:Cg-Oh $atom:C12 $atom:O3
+    $bond:CO1  @bond:Cg-Os $atom:C2 $atom:O4
+    $bond:CO2  @bond:Cg-Os $atom:C15 $atom:O4
+    $bond:CO3  @bond:Cg-Os $atom:C15 $atom:O0
+    $bond:CH1 @bond:Cg-H1 $atom:C20 $atom:H22
+    $bond:CH2 @bond:Cg-H1 $atom:C20 $atom:H23
+    $bond:CH3 @bond:Cg-H1 $atom:C2 $atom:H7
+    $bond:CH4 @bond:Cg-H1 $atom:C1 $atom:H17
+    $bond:CH5 @bond:Cg-H1 $atom:C9 $atom:H18
+    $bond:CH6 @bond:Cg-H1 $atom:C12 $atom:H19
+    $bond:CH7 @bond:Cg-H1 $atom:C15 $atom:H24
+    $bond:OH1  @bond:Oh-Ho $atom:O8 $atom:H21
+    $bond:OH2  @bond:Oh-Ho $atom:O10 $atom:H11
+    $bond:OH3  @bond:Oh-Ho $atom:O13 $atom:H14
+    $bond:OH4  @bond:Oh-Ho $atom:O3 $atom:H6
+  }
+
+
+}
+
+
+celluloseL.move(0.710600,-1.117100,-0.720200)
+
