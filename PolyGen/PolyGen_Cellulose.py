@@ -94,6 +94,20 @@ for i in range(1,npoly):
 	cuts.write(str(nmon*i)+' \n')
 cuts.close()
 
+'''
+Modify this section as needed for genpoly.
+
+=== Used in this script ===
+Cuts - includes the created cut file
+Sequence - includes the created sequence file
+
+Bonds - links monomers using the specified ID's, that will be in the *.lt files
+
+Inheirts - needs to inherit forcefields from the *.lt and external forcefield files to write the proper data files
+
+=== Optional ===
+Helix - rotates the backbone
+'''
 start = 'python genpoly_lt_new.py '
 header = '-header \"import '+forcefield+'\" '
 polymer = '-polymer-name '+'\"'+poly+'\" '
@@ -117,6 +131,10 @@ os.system(argsGen)
 # Modifying _system file
 #-------------------------------------
 
+'''
+Modify this section to include all *.lt files and the forcefields. See MOLTEMPLATE's documentation for more info
+
+'''
 #add beginning and end
 add = []
 add.append('import \"glycam_06j.lt\" \n')
