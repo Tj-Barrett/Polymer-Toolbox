@@ -2,4 +2,6 @@
 
 Generates Polymer data inputs for LAMMPS using moltemplate.
 
-Example polymer uses cellulose and glycam
+Example polymer uses cellulose and glycam.
+
+Modify the sections as needed to write the necessary headers and include helixes, cuts, etc.
