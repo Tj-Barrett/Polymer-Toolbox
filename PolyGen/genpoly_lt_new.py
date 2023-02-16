@@ -28,6 +28,13 @@
    share the same molecule-ID number.)  If multiple polymers are requested, then
    each of them will have their own polymer object.
 
+
+   Note from Tj:
+   
+   The cuts implementation seemed to trigger an error at N+1 cut locations, putting 
+   the final cut outside the length of the chain. This is a fatal error. I corrected
+   it here to work with the cuts files.
+
 """
 
 
